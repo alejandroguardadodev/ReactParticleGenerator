@@ -4,6 +4,8 @@ import { styled } from '@mui/system';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 
+import SpriteSheetModal from '../modals/windows/SpriteSheetModal';
+
 const BoxContainer = styled(Box)({
     width: '100vw',
     height: '100vh',
@@ -21,6 +23,8 @@ const DashboardLayout = () => {
                 <Outlet />
             </BoxContainer>
         </Container>
+
+        <SpriteSheetModal />
     </>
   )
 }
