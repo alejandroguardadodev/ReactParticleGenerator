@@ -12,6 +12,12 @@ const theme = createTheme({
             main: '#2678BF',
             light: '#50B4F2',
         },
+        ochre: {
+            main: '#E3D026',
+            light: '#E9DB5D',
+            dark: '#A29415',
+            contrastText: '#242105',
+          },
     },
     components: {
         MuiCssBaseline: {
@@ -70,6 +76,24 @@ const theme = createTheme({
                         borderBottom: '1px solid #50B4F2',
                         borderRight: '1px solid #50B4F2',
                     },
+                }
+            }
+        },
+        MuiTextField: {
+            styleOverrides: {
+                root: {
+                    '.MuiOutlinedInput-root': {
+                        fontFamily: `"Lekton", sans-serif !important`,
+                        fontWeight: 400,
+                        color: 'white',
+                        fontSize: '.9rem',
+                        background: 'rgba(0,0,0,.05)'
+                    },
+                    '& .MuiFormHelperText-root': {
+                        fontFamily: "'Audiowide', sans-serif",
+                        textTransform: 'capitalize',
+                        fontSize: ".8rem"
+                    }
                 }
             }
         }

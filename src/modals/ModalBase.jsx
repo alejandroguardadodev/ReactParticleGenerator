@@ -1,12 +1,15 @@
+import { styled } from '@mui/material/styles'
+
+import PropTypes from 'prop-types';
+
 import Backdrop from '@mui/material/Backdrop';
 import Box from '@mui/material/Box';
+
 import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
+
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-
-import { styled } from '@mui/material/styles'
-import PropTypes from 'prop-types';
 
 const ModalBox = styled(Box, {
     shouldForwardProp: (prop) => prop !== "modalPosition" && prop !== 'modalSize',
