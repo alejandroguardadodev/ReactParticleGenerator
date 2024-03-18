@@ -33,7 +33,7 @@ const SpriteSheetForm = () => {
                     </Grid>
                 </Grid>
                 <Box sx={{ width: '100%', display: 'flex', 'justifyContent': 'flex-end' }}>
-                    <Button variant="contained" type="submit" startIcon={<BrowserUpdatedIcon />} variantion="g1">Save</Button>
+                    <Button variant="contained" type="submit" startIcon={<BrowserUpdatedIcon />} variantion="g1">Save</Button> 
                 </Box>
             </Stack>
         </MainForm>
