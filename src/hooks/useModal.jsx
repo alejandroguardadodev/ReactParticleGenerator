@@ -9,7 +9,10 @@ const useModal = (modal_title) => {
 
     const setOpen = (value) => {
         if (value) dispatch(openModal(modal_title))
-        else dispatch(closeModal(modal_title))
+        else {
+            dispatch(closeModal(modal_title))
+            //if (onCloseModal !== null || onCloseModal !== null) onCloseModal()
+        }
     }
 
     return [
