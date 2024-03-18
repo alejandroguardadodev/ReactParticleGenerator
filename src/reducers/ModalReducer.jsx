@@ -3,8 +3,16 @@ import {
     CLOSE_MODAL
 } from '../types/ModalTypes'
 
+const initModalValue = {
+    open: false,
+    onClose: null,
+    label: ''
+}
+
 const initialState  = {
-    "Sprite_Sheet": false
+    "Sprite_Sheet": {
+        ...initModalValue
+    }
 }
 
 export default function(state = initialState, action) {
@@ -12,15 +20,22 @@ export default function(state = initialState, action) {
 
     switch(type) {
         case OPEN_MODAL:
+            const { modal_title, modal_data } = action.payload
+
             return {
                 ...state,
-                [action.payload]: true,
+                [modal_title]: {
+                    open: true,
+                    ...modal_data
+                },
             }
 
         case CLOSE_MODAL:
             return {
                 ...state,
-                [action.payload]: false,
+                [action.payload]: {
+                    ...initModalValue
+                },
             }
 
         default:

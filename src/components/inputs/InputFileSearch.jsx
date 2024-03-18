@@ -1,6 +1,7 @@
 import { styled } from '@mui/material/styles'
+import { useRef } from 'react'
 
-import Button from '@mui/material/Button';
+import Button from '@mui/material/Button'
 
 const VisuallyHiddenInput = styled('input')({
     clip: 'rect(0 0 0 0)',
@@ -16,6 +17,8 @@ const VisuallyHiddenInput = styled('input')({
 
 const InputFileSearch = ({ icon, handleFileBrowser, children }) => {
 
+    const inputRef = useRef(null)
+
     const handleOpenFile = (e) => {
         let file = e.target.files[0]
     
@@ -23,13 +26,14 @@ const InputFileSearch = ({ icon, handleFileBrowser, children }) => {
     
         fr.onload = function () {
             handleFileBrowser(fr)
+            inputRef.current.value = ""
         }
     
         fr.readAsDataURL(file)
       }
 
     return (
-        <Button variant="contained" component="label" startIcon={icon}>{children} <VisuallyHiddenInput onChange={handleOpenFile} required type="file" accept="image/png, image/gif, image/jpeg"  /></Button>
+        <Button variant="contained" component="label" startIcon={icon}>{children} <VisuallyHiddenInput ref={inputRef} onChange={handleOpenFile} required type="file" accept="image/png, image/gif, image/jpeg" /></Button>
     )
 }
 

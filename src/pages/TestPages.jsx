@@ -1,19 +1,12 @@
 import { useState, useEffect } from 'react';
 import { styled } from '@mui/material/styles'
 
-import useModal from '../hooks/useModal';
-import useClientForm from '../hooks/useClientForm';
+import useModal from '../hooks/useModal'
 
-import { SpriteSheetSchema } from '../schemas';
+import Box from '@mui/material/Box'
 
-import Box from '@mui/material/Box';
-import Grid from '@mui/material/Grid';
+import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate'
 
-import Button from '@mui/material/Button';
-import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
-import BackupIcon from '@mui/icons-material/Backup';
-
-import InputBase from '../fields/InputBase';
 import InputFileSearch from '../components/inputs/InputFileSearch';
 
 const TestPages = () => {
@@ -21,10 +14,8 @@ const TestPages = () => {
 
   const handleFileBrowser = (fr) => {
     localStorage.setItem("firstOpenImageFile", fr.result)
-    setOpenSpriteSheetModal(true)
+    setOpenSpriteSheetModal(true, { label: 'new' })
   }
-
-  // const { formPackage, onSubmit, data: formData } = useClientForm(SpriteSheetSchema, { numberOfFrames: "1" });
   
   // useEffect(() => {
   //   if (formData) {

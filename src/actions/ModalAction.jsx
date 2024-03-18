@@ -3,10 +3,13 @@ import {
     CLOSE_MODAL
 } from '../types/ModalTypes'
 
-export function openModal(modalName) {
+export function openModal(modalName, actions) {
     return async (dispatch) => dispatch({
         type: OPEN_MODAL,
-        payload: modalName
+        payload: {
+            modal_title: modalName,
+            modal_data: actions
+        }
     })
 }
 
