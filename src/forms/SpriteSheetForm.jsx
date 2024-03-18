@@ -26,14 +26,14 @@ const SpriteSheetForm = () => {
             <Stack sx={{ width: '100%', height: '100%' }}>
                 <Grid container spacing={2} pt={2} sx={{ flexGrow: 1 }}>
                     <Grid item xs={6}>
-                        <InputBase id="numberOfFrames" label="Number Of Frames" placeholder="Only Numbers" type="number" formPackage={formPackage} borderColor="#50F287" />
+                        <InputBase id="numberOfFrames" label="Number Of Frames" placeholder="Only Numbers" type="number" min={1} formPackage={formPackage} borderColor="#50F287" />
                     </Grid>
                     <Grid item xs={6}>
-                        <InputBase id="framesPerRows" label="Frames Per Rows" placeholder="Only Numbers" type="number" formPackage={formPackage} borderColor="#50F287" />
+                        <InputBase id="framesPerRows" label="Frames Per Rows" placeholder="Only Numbers" type="number" min={1} formPackage={formPackage} borderColor="#50F287" />
                     </Grid>
                 </Grid>
                 <Box sx={{ width: '100%', display: 'flex', 'justifyContent': 'flex-end' }}>
-                    <Button variant="contained" type="submit" startIcon={<BrowserUpdatedIcon />}>Save</Button>
+                    <Button variant="contained" type="submit" startIcon={<BrowserUpdatedIcon />} variantion="g1">Save</Button>
                 </Box>
             </Stack>
         </MainForm>

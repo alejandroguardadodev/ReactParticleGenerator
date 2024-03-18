@@ -55,9 +55,9 @@ const theme = createTheme({
                 root: {
                     fontFamily: "'Audiowide', sans-serif",
                     textTransform: 'capitalize',
-                    fontSize: "15px"
+                    fontSize: "15px",
                 },
-                contained: {
+                contained: ({ variantion }) => ({
                     background: '#2678BF !Important',
                     color: 'black',
 
@@ -76,7 +76,19 @@ const theme = createTheme({
                         borderBottom: '1px solid #50B4F2',
                         borderRight: '1px solid #50B4F2',
                     },
-                }
+
+                    ...(variantion === 'g1' && {
+                        background: '#50F287 !Important',
+                        border: '1px solid #50F287',
+
+                        '&:hover': {
+                            background: '#50F287',
+    
+                            borderBottom: '1px solid #BC51DB',
+                            borderRight: '1px solid #BC51DB',
+                        },
+                    })
+                })
             }
         },
         MuiTextField: {
