@@ -14,13 +14,18 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
 import { isNumeric } from '../tools/mathTools';
 
-const CostumInputStyle = styled(TextField)(({ theme }) => ({
+const CostumInputStyle = styled(TextField, {
+  shouldForwardProp: (prop) => prop !== "borderColor",
+  overridesResolver: (props, styles) => [
+    styles.root,
+  ]
+})(({ theme, borderColor }) => ({
   '& .MuiOutlinedInput-root': {
     '& input': {
       
     },
     '& fieldset': {
-      border: `1px solid ${theme.palette.primary.light} !important`,
+      border: `1px solid ${(borderColor && borderColor !== '')? borderColor : theme.palette.primary.light} !important`,
     },
     '&.Mui-focused legend': {
         paddingRight: '.7rem',
@@ -35,7 +40,7 @@ const CostumInputStyle = styled(TextField)(({ theme }) => ({
     color: "white",
     textTransform: 'capitalize',
     '&.Mui-focused': {
-      color: `${theme.palette.primary.light}`,
+      color: `${(borderColor && borderColor !== '')? borderColor : theme.palette.primary.light}`,
     },
     "&.Mui-error": {
       color: `${theme.palette.error.main} !important`,
@@ -47,15 +52,17 @@ const CostumInputStyle = styled(TextField)(({ theme }) => ({
   borderRadius: '3px',
 }));
 
-const CostumIconButton = styled(IconButton)(({ theme }) => ({
+const CostumIconButton = styled(IconButton, {
+  shouldForwardProp: (prop) => prop !== "itemColor",
+})(({ theme, itemColor }) => ({
   padding: '1px',
-  color: `${theme.palette.primary.light}`,
+  color: `${(itemColor && itemColor !== '')? itemColor : theme.palette.primary.light}`,
   '& svg': {
     fontSize: '1rem'
   }
 }))
 
-const InputBase = ({id, label, placeholder, type, formPackage: {register, errors, setValue, getValues}, min = 0}) => {
+const InputBase = ({id, label, placeholder, type, formPackage: {register, errors, setValue, getValues}, min = 0, borderColor}) => {
 
   const updateNumberByArrow = (sign) => {
     let value = getValues(id);
@@ -90,11 +97,12 @@ const InputBase = ({id, label, placeholder, type, formPackage: {register, errors
               aria-label="Vertical button group"
               variant="text"
             >
-              <CostumIconButton onClick={handleUpNumber}><ArrowDropUpIcon /></CostumIconButton>
-              <CostumIconButton onClick={handleDownNumber}><ArrowDropDownIcon /></CostumIconButton>
+              <CostumIconButton itemColor={borderColor} onClick={handleUpNumber}><ArrowDropUpIcon /></CostumIconButton>
+              <CostumIconButton itemColor={borderColor} onClick={handleDownNumber}><ArrowDropDownIcon /></CostumIconButton>
             </ButtonGroup>
           ) : null
         }}
+        borderColor={borderColor}
       />
     </>
   )

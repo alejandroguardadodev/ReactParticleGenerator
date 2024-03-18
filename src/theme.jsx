@@ -92,7 +92,7 @@ const theme = createTheme({
                     '& .MuiFormHelperText-root': {
                         fontFamily: "'Audiowide', sans-serif",
                         textTransform: 'capitalize',
-                        fontSize: ".8rem"
+                        fontSize: ".7rem"
                     }
                 }
             }
