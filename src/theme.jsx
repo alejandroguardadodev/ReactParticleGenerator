@@ -124,7 +124,18 @@ const theme = createTheme({
                     borderBottom: '1px dashed rgba(255, 255, 255, .35)'
                 }
             }
-        }
+        },
+        MuiListSubheader: {
+            styleOverrides: {
+                root: {
+                    color: 'white',
+                    fontSize: '16px',
+                    fontWeight: 400,
+                    fontFamily: "'Lekton', sans-serif",
+                    background: 'transparent',
+                }
+            }
+        },
     }
 })
 

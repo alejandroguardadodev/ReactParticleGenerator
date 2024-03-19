@@ -17,16 +17,16 @@ const MainForm = styled('form')({
     height: '100%'
 })
 
-const SpriteSheetForm = () => {
+const SpriteSheetForm = ({spriteProps, onFiledChange}) => {
 
-    const { formPackage, onSubmit, data: formData } = useClientForm(SpriteSheetSchema, { numberOfFrames: "1", framesPerRows: "1" })
+    const { formPackage, onSubmit, data: formData } = useClientForm(SpriteSheetSchema, spriteProps)
 
     return (
         <MainForm onSubmit={onSubmit}>
             <Stack sx={{ width: '100%', height: '100%' }}>
                 <Grid container spacing={2} pt={2} sx={{ flexGrow: 1 }}>
                     <Grid item xs={6}>
-                        <InputBase id="numberOfFrames" label="Number Of Frames" placeholder="Only Numbers" type="number" min={1} formPackage={formPackage} borderColor="#50F287" />
+                        <InputBase id="numberOfFrames" label="Number Of Frames" placeholder="Only Numbers" type="number" min={1} formPackage={formPackage} borderColor="#50F287" onChange={spriteProps} />
                     </Grid>
                     <Grid item xs={6}>
                         <InputBase id="framesPerRows" label="Frames Per Rows" placeholder="Only Numbers" type="number" min={1} formPackage={formPackage} borderColor="#50F287" />

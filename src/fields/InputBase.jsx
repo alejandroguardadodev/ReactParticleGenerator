@@ -62,7 +62,7 @@ const CostumIconButton = styled(IconButton, {
   }
 }))
 
-const InputBase = ({id, label, placeholder, type, formPackage: {register, errors, setValue, getValues}, min = 0, borderColor}) => {
+const InputBase = ({id, label, placeholder, type, formPackage: {register, errors, setValue, getValues}, min = 0, borderColor, onChange}) => {
 
   const updateNumberByArrow = (sign) => {
     let value = getValues(id);
@@ -78,6 +78,10 @@ const InputBase = ({id, label, placeholder, type, formPackage: {register, errors
   const handleUpNumber = () => updateNumberByArrow(+1)
 
   const handleDownNumber = () => updateNumberByArrow(-1)
+
+  const inputOnChange = e => {
+    console.log(id, getValues(id))
+  }
 
   return (
     <>
@@ -103,6 +107,7 @@ const InputBase = ({id, label, placeholder, type, formPackage: {register, errors
           ) : null
         }}
         borderColor={borderColor}
+        onChange={inputOnChange}
       />
     </>
   )

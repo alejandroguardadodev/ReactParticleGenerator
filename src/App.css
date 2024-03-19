@@ -1,0 +1,47 @@
+.left-menu-grid-setting {
+    position: relative;
+}
+
+.left-menu-grid-setting::after {
+    display: block;
+    content: '';
+
+    width: 100%;/*calc(100% - 16px);*/
+    height: 100px;
+    box-sizing: border-box;
+
+    position: absolute;
+    top: 0;
+    right: 0;
+
+    z-index: -100;
+
+    transform: translateY(-100%);
+
+    border-left: 1px dashed rgba(255, 255, 255, .35);
+
+    background: #072B4C;
+}
+
+.left-menu-setting-item {
+    position: relative;
+}
+
+.left-menu-setting-item::after {
+    display: block;
+    content: '';
+
+    width: 90%;
+    height: 100%;
+    box-sizing: border-box;
+
+    position: absolute;
+    top: 0;
+    left: 5%;
+
+    z-index: 100;
+
+    border-bottom: 2px solid #2678BF;
+
+    background: transparent !important;
+}

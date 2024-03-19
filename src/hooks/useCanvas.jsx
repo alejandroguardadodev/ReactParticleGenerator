@@ -3,6 +3,7 @@ import { useRef, useEffect, useState } from 'react'
 const useCanvas = (containerWidth, containerHeight, show, drawFunction) => {
 
     const canvasRef = useRef(null)
+    const [context, setContext] = useState(null)
     
     const shouldBeHidden = () => canvasRef == null || canvasRef.current == null || canvasRef.current == undefined || !show
 
@@ -12,6 +13,8 @@ const useCanvas = (containerWidth, containerHeight, show, drawFunction) => {
         ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height)
 
         drawFunction(ctx)
+
+        //setContext(ctx)
     }
 
     useEffect(() => {
@@ -45,7 +48,8 @@ const useCanvas = (containerWidth, containerHeight, show, drawFunction) => {
     }, [draw, canvasRef, show])
 
     return {
-        canvasRef
+        canvasRef,
+        context
     }
 }
 
