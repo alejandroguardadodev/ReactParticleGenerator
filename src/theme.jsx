@@ -19,6 +19,13 @@ const theme = createTheme({
             contrastText: '#242105',
           },
     },
+    typography: {
+        h4: {
+            fontSize: 18,
+            fontWeight: 400,
+            fontFamily: "'Lekton', sans-serif",
+        },
+    },
     components: {
         MuiCssBaseline: {
             styleOverrides: `
@@ -106,6 +113,15 @@ const theme = createTheme({
                         textTransform: 'capitalize',
                         fontSize: ".7rem"
                     }
+                }
+            }
+        },
+        MuiAppBar: {
+            styleOverrides: {
+                root: {
+                    background: 'transparent',
+                    boxShadow: 'none',
+                    borderBottom: '1px dashed rgba(255, 255, 255, .35)'
                 }
             }
         }

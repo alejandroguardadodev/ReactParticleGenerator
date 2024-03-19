@@ -4,6 +4,8 @@ import { styled } from '@mui/system';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 
+import Header from '../components/Header';
+
 import SpriteSheetModal from '../modals/windows/SpriteSheetModal';
 
 const BoxContainer = styled(Box)({
@@ -15,12 +17,19 @@ const BoxContainer = styled(Box)({
     flexDirection: 'column'
 });
 
+const BodyBox = styled(Box)({
+  flexGrow: 1,
+});
+
 const DashboardLayout = () => {
   return (
     <>
         <Container variant="no-space">
             <BoxContainer>
-                <Outlet />
+                <Header />
+                <BodyBox>
+                  <Outlet />
+                </BodyBox>
             </BoxContainer>
         </Container>
 

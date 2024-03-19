@@ -10,6 +10,7 @@ import store from './store';
 import DashboardLayout from './layouts/DashboardLayout';
 
 import TestPages from './pages/TestPages';
+import MainPage from './pages/MainPage';
 
 import './App.css'
 
@@ -21,7 +22,7 @@ function App() {
         <Provider store={store}>
           <Routes>
             <Route path='/' element={<DashboardLayout />}>
-              <Route index element={<TestPages />} />
+              <Route index element={<MainPage />} />
             </Route>
           </Routes>
         </Provider>
