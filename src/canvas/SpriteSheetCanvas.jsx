@@ -4,7 +4,7 @@ import useCanvas from '../hooks/useCanvas'
 
 const SpriteSheetCanvas = ({ image, imgWidth, imgHeight, containerWidth, containerHeight, spriteProps, kind }) => {
 
-    const { columns, rows } = spriteProps
+    const { columns, rows, numberOfFrames, framesPerRows } = spriteProps
 
     const { canvasRef } = useCanvas(containerWidth, containerHeight, open, ctx => {
         if (imgWidth <= 0 || imgHeight <= 0) return;
@@ -19,7 +19,10 @@ const SpriteSheetCanvas = ({ image, imgWidth, imgHeight, containerWidth, contain
         let boxWidth = imgWidth / columns
         let boxHeight = imgHeight / rows
 
-        ctx.strokeRect(centerShift_x, centerShift_y, boxWidth, boxHeight)
+        for (var i = 0; i < framesPerRows; i++)
+            for (var j = 0; j < numberOfFrames; j++) {
+                ctx.strokeRect(centerShift_x + (boxWidth * i), centerShift_y + (boxHeight * j), boxWidth, boxHeight)
+            }
     })
 
     return (

@@ -136,6 +136,18 @@ const theme = createTheme({
                 }
             }
         },
+        MuiListItemText: {
+            styleOverrides: {
+                root: {
+                    color: 'white',
+                    fontWeight: 400,
+                    '&>span': {
+                        fontSize: '17px',
+                        fontFamily: "'Lekton', sans-serif",
+                    }
+                }
+            }
+        },
     }
 })
 

@@ -2,6 +2,8 @@ import Box from '@mui/material/Box'
 import List from '@mui/material/List'
 import ListSubheader from '@mui/material/ListSubheader'
 
+import ListItemCard from '../lists/ListItemCard'
+
 const LeftMenu = () => {
   return (
     <Box sx={{ background: '#072B4C', height: '100%', borderLeft: '1px dashed rgba(255, 255, 255, .35)' }}>
@@ -13,6 +15,8 @@ const LeftMenu = () => {
                 </ListSubheader>
             }    
         >
+
+          <ListItemCard title="Sprites" />
             
         </List>
     </Box>
