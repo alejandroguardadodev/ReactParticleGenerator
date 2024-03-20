@@ -67,15 +67,16 @@ const InputBase = ({id, label, placeholder, type, formPackage: {register, errors
   const updateNumberByArrow = (sign) => {
     let value = `${getValues(id)}`;
     
-    if (isNumeric(value)) { // <--- NOT WORK
+    if (isNumeric(value)) { 
       let numValue = parseInt(value);
+      
+      if ((numValue + sign) < min)  value = `${min}`
+      else value = `${numValue + sign}`
 
-      if ((numValue + sign) < min) setValue(id, `${min}`)
-      else setValue(id, `${numValue + sign}`)
-    
-    } else setValue(id, `${min}`)
+    } else value = `${min}`
 
-    console.log(id, getValues(id))
+    setValue(id, value)
+    onChange(id, value);
   }
 
   const handleUpNumber = () => updateNumberByArrow(+1)
@@ -83,7 +84,10 @@ const InputBase = ({id, label, placeholder, type, formPackage: {register, errors
   const handleDownNumber = () => updateNumberByArrow(-1)
 
   const onChangeHandler = e => {
-    console.log(id, getValues(id))
+    const value = e.target.value;
+
+    setValue(id, `${value}`)
+    onChange(id, value);
   }
 
   return (
@@ -110,7 +114,7 @@ const InputBase = ({id, label, placeholder, type, formPackage: {register, errors
           ) : null
         }}
         borderColor={borderColor}
-        onChange={onChangeHandler }
+        onChange={onChangeHandler}
       />
     </>
   )

@@ -5,4 +5,6 @@ export const SpriteSheetSchema = yup.object({
     framesPerRows: yup.number().typeError('Only numbers').positive().min(1, "Must be more than zero").required(),
     boxHeight: yup.number().typeError('Only numbers').positive().min(1, "Must be more than zero").required(),
     boxWidth: yup.number().typeError('Only numbers').positive().min(1, "Must be more than zero").required(),
+    columns: yup.number().typeError('Only numbers').positive().min(1, "Must be more than zero").required(),
+    rows: yup.number().typeError('Only numbers').positive().min(1, "Must be more than zero").required(),
 }).required();

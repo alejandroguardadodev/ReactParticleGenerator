@@ -11,6 +11,8 @@ import SpriteSheetForm from '../../forms/SpriteSheetForm'
 import Grid from '@mui/material/Grid'
 
 const initSpritePropeties = {
+    columns: "1",
+    rows: "1",
     numberOfFrames: "1",
     framesPerRows: "1",
     boxHeight: "0",
@@ -77,6 +79,14 @@ const SpriteSheetModal = () => {
         });
     }, [canvasContainerWidth, canvasContainerHeight, image, open])
 
+    const onChange = (id, value) => {
+        
+        setSpritePropeties({
+            ...spritePropeties,
+            [id]: value
+        });
+    }
+
     return (
         <ModalBase open={open} handleClose={() => setOpen(false)}>
             <Grid container spacing={2} sx={{ height: '100%' }}>
@@ -87,11 +97,13 @@ const SpriteSheetModal = () => {
                         imgHeight={imgHeight}
                         kind={getMetadata('label')} 
                         containerWidth={canvasContainerWidth} 
-                        containerHeight={canvasContainerHeight} />
+                        containerHeight={canvasContainerHeight}
+                        spriteProps={spritePropeties}
+                        />
                 </Grid>
                 <Grid item xs={5}>
                     <SpriteSheetForm 
-                        setSpriteProps={setSpritePropeties}
+                        onChange={onChange}
                         spriteProps={spritePropeties}
                     />
                 </Grid>
