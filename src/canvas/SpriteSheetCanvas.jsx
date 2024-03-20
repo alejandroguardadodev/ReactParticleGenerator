@@ -11,7 +11,8 @@ const SpriteSheetCanvas = ({ image, imgWidth, imgHeight, containerWidth, contain
         var centerShift_y = ( ctx.canvas.height - imgHeight ) / 2;  
         // DRAW IMAGE -------------------------------
         ctx.drawImage(image, 0,0, image.width, image.height, centerShift_x, centerShift_y, imgWidth, imgHeight)
-        // Draw Rectangles
+        // Draw Rectangles #50F287
+        ctx.strokeStyle = "#FF0000";
         ctx.strokeRect(centerShift_x,centerShift_y,imgWidth, imgHeight)
     })
 

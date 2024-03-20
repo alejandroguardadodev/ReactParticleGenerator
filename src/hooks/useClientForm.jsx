@@ -20,6 +20,17 @@ const useClientForm = (customSchema, initValues, isAsync = true) => {
         })
     }
 
+    const resetFormByValues = (values) => {
+        reset(values, {
+            keepErrors: false, 
+            keepDirty: false,
+            keepIsSubmitted: false,
+            keepTouched: false,
+            keepIsValid: false,
+            keepSubmitCount: false,
+        })
+    }
+
     useEffect(() => {
         resetValue();
         //setData(initValues)
@@ -63,7 +74,8 @@ const useClientForm = (customSchema, initValues, isAsync = true) => {
         setErrorsByFields,
         onSubmit: handleSubmit(onSubmit),
         getValues,
-        setValue
+        setValue,
+        resetFormByValues
     }
 }
 

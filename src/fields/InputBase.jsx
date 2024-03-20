@@ -65,21 +65,24 @@ const CostumIconButton = styled(IconButton, {
 const InputBase = ({id, label, placeholder, type, formPackage: {register, errors, setValue, getValues}, min = 0, borderColor, onChange}) => {
 
   const updateNumberByArrow = (sign) => {
-    let value = getValues(id);
+    let value = `${getValues(id)}`;
     
-    if (isNumeric(value)) {
+    if (isNumeric(value)) { // <--- NOT WORK
       let numValue = parseInt(value);
 
       if ((numValue + sign) < min) setValue(id, `${min}`)
       else setValue(id, `${numValue + sign}`)
+    
     } else setValue(id, `${min}`)
+
+    console.log(id, getValues(id))
   }
 
   const handleUpNumber = () => updateNumberByArrow(+1)
 
   const handleDownNumber = () => updateNumberByArrow(-1)
 
-  const inputOnChange = e => {
+  const onChangeHandler = e => {
     console.log(id, getValues(id))
   }
 
@@ -107,7 +110,7 @@ const InputBase = ({id, label, placeholder, type, formPackage: {register, errors
           ) : null
         }}
         borderColor={borderColor}
-        onChange={inputOnChange}
+        onChange={onChangeHandler }
       />
     </>
   )

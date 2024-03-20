@@ -12,13 +12,22 @@ import Grid from '@mui/material/Grid'
 
 const initSpritePropeties = {
     numberOfFrames: "1",
-    framesPerRows: "1", 
+    framesPerRows: "1",
+    boxHeight: "0",
+    boxWidth: "0"
 }
 
 const SpriteSheetModal = () => {
 
     const [image, setImage] = useState(null)
-    const [ { imgWidth, imgHeight }, setImgSize ] = useState({ imgWidth: 0, imgHeight: 0 })
+
+    const [ { imgWidth, imgHeight, realImgWidth, realImgHeight }, setImgSize ] = useState({ 
+        imgWidth: 0, 
+        imgHeight: 0,
+        realImgWidth: 0,
+        realImgHeight: 0
+    })
+    
     const [ spritePropeties, setSpritePropeties ] = useState(initSpritePropeties)
 
     const [open, setOpen, getMetadata] = useModal("Sprite_Sheet")
@@ -49,10 +58,23 @@ const SpriteSheetModal = () => {
 
         var ratio  = Math.min(hRatio, vRatio);
         // SET NORMAL IMAGE SET ---------------------
-        setImgSize({
-            imgWidth: img_width * ratio, 
-            imgHeight: img_height * ratio
-        })
+        let imgWidth = Math.floor(img_width * ratio)
+        let imgHeight = Math.floor(img_height * ratio)
+
+        var imageSize = {
+            imgWidth: `${imgWidth}`, 
+            imgHeight: `${imgHeight}`,
+            realImgWidth: `${imgWidth}`, 
+            realImgHeight: `${imgHeight}`,
+        }
+
+        setImgSize(imageSize)
+        
+        setSpritePropeties({
+            ...spritePropeties,
+            boxWidth: imgWidth,
+            boxHeight: imgHeight,
+        });
     }, [canvasContainerWidth, canvasContainerHeight, image, open])
 
     return (
