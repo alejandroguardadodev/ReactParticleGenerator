@@ -1,25 +1,36 @@
+import { styled } from '@mui/material/styles'
+
 import Box from '@mui/material/Box'
 import List from '@mui/material/List'
 import ListSubheader from '@mui/material/ListSubheader'
 
 import ListItemCard from '../lists/ListItemCard'
 
-const LeftMenu = () => {
-  return (
-    <Box sx={{ background: '#072B4C', height: '100%', borderLeft: '1px dashed rgba(255, 255, 255, .35)' }}>
-        <List 
-            sx={{width: '100%', background: 'transparent'}} component="nav" aria-labelledby='left-menu'
-            subheader={
-                <ListSubheader component="div" id="left-menu-subheader">
-                    Setting
-                </ListSubheader>
-            }    
-        >
+import SpritesCardListItemBody from '../lists/items/SpritesCardListItemBody'
 
-          <ListItemCard title="Sprites" />
-            
+const BoxContainer = styled(Box)({
+  scrollbarWidth: '10px',
+  scrollbarColor: '#F2C250 #072b4c',
+  '&::-webkit-scrollbar': {
+    width: '10px'
+  },
+  '&::-webkit-scrollbar-track': {
+    background: '#072b4c'
+  },
+  '&::-webkit-scrollbar-thumb': {
+      backgroundColor: '#F2C250',
+      borderRadius: '10px',
+      border: '1px solid white !important'
+  }
+})
+
+const LeftMenu = ({ height }) => {
+  return (
+    <BoxContainer sx={{ background: '#072B4C', height: `${Math.floor(height)}px`, borderLeft: '1px dashed rgba(255, 255, 255, .35)', overflowY: 'scroll', overflowX: 'hidden', boxSizing: 'border-box' }}>
+        <List sx={{width: '100%', background: 'transparent'}} component="nav" aria-labelledby='left-menu' >
+          <ListItemCard title="Sprites" body={<SpritesCardListItemBody />} />
         </List>
-    </Box>
+    </BoxContainer>
   )
 }
 
