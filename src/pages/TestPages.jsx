@@ -1,42 +1,98 @@
-import { useState, useEffect } from 'react';
-import { styled } from '@mui/material/styles'
+import { useState } from "react";
 
-import useModal from '../hooks/useModal'
+import {
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  DragOverlay
+} from "@dnd-kit/core"
+
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  rectSortingStrategy
+} from "@dnd-kit/sortable"
 
 import Box from '@mui/material/Box'
 
-import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate'
-
-import InputFileSearch from '../components/inputs/InputFileSearch';
+import SpriteCardsItem from "../components/dnds/items/SpriteCardsItem";
 
 const TestPages = () => {
-  const [open, setOpenSpriteSheetModal] = useModal("Sprite_Sheet")
 
-  const handleFileBrowser = (fr) => {
-    localStorage.setItem("firstOpenImageFile", fr.result)
-    setOpenSpriteSheetModal(true, { label: 'new' })
+  const [activeId, setActiveId] = useState(null);
+  const [items, setItems] = useState([
+    "0",
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9",
+    "10",
+  ])
+
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates
+    })
+  )
+
+  const handleDragStart = (event) => {
+    setActiveId(event.active.id);
   }
-  
-  // useEffect(() => {
-  //   if (formData) {
-      
-  //   }
-  // }, [formData])
+
+  const handleDragEnd = (event) => {
+    setActiveId(null);
+    const { active, over } = event;
+
+    if (active.id !== over.id) {
+      setItems((items) => {
+        const oldIndex = items.indexOf(active.id);
+        const newIndex = items.indexOf(over.id);
+
+        return arrayMove(items, oldIndex, newIndex);
+      });
+    }
+  }
 
   return (
-    <>
-    {/* <form onSubmit={onSubmit}> */}
-      <Box p={3} pt={4}>
-        <InputFileSearch icon={<AddPhotoAlternateIcon />} handleFileBrowser={handleFileBrowser}>Open Image</InputFileSearch>
-        {/* <Grid container spacing={2}>
-          <Grid item xs={4}><InputBase id="numberOfFrames" label="Number Of Frames" placeholder="Only Numbers" type="number" formPackage={formPackage} /></Grid>
-          <Grid item xs={4}></Grid>
-          <Grid item xs={4}></Grid>
-          <Grid item xs={12}><Button variant="contained" type="submit" startIcon={<BackupIcon />}>Submit</Button></Grid>
-        </Grid> */}
+    <DndContext
+      sensors={sensors}
+      collisionDetection={closestCenter}
+      onDragEnd={handleDragEnd}
+      onDragStart={handleDragStart}
+    >
+      <Box p={2} sx={{ maxWidth: '1000px', display: 'flex', flexWrap: 'wrap', flexDirection: 'row', boxShadow: '0px 0px 49px -12px rgba(0,0,0,0.57)' }}>
+        <SortableContext items={items} strategy={rectSortingStrategy}>
+          {
+            items.map((id) => (
+              <SpriteCardsItem key={id} dragId={id} handle={true} value={id} />
+            ))
+          }
+          <DragOverlay>
+            {
+              activeId? (
+                <div
+                  style={{
+                    width: "300px",
+                    height: "300px",
+                    backgroundColor: "red"
+                  }}
+                ></div>
+              ) : null
+            }
+          </DragOverlay>
+        </SortableContext>
       </Box>
-    {/* </form> */}
-    </>
+    </DndContext>
   )
 }
 

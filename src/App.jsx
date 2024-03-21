@@ -23,6 +23,7 @@ function App() {
           <Routes>
             <Route path='/' element={<DashboardLayout />}>
               <Route index element={<MainPage />} />
+              <Route path='test' element={<TestPages />} />
             </Route>
           </Routes>
         </Provider>
