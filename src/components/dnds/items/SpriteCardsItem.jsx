@@ -5,15 +5,17 @@ import Box from '@mui/material/Box'
 
 import DraggableItemBase from '../DraggableItemBase'
 
-const CardContainer = styled(Box)(({ theme }) => ({
-  width: "300px",
-  height: "300px",
+const CardContainer = styled(Box, {
+  shouldForwardProp: (prop) => prop !== "boxWidth"
+})(({ boxWidth }) => ({
+  width: `${boxWidth}px`,
+  height: `${boxWidth + 25}px`,
   border: "2px solid red",
   backgroundColor: "#cccccc",
   margin: "10px",
 }))
 
-const SpriteCardsItem = ({ dragId }) => {
+const SpriteCardsItem = ({ dragId, width }) => {
   const {
     attributes,
     listeners,
@@ -25,7 +27,7 @@ const SpriteCardsItem = ({ dragId }) => {
   
   return (
     <DraggableItemBase id={dragId} setNodeRef={setNodeRef} transform={transform} transition={transition} isDragging={isDragging}>
-      <CardContainer {...listeners} {...attributes}>
+      <CardContainer {...listeners} {...attributes} boxWidth={width}>
         TEST
       </CardContainer>
     </DraggableItemBase>
