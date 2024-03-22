@@ -84,7 +84,7 @@ const SpritesCardListItemBody = ({ containerWidth }) => {
           <SortableContext items={items} strategy={rectSortingStrategy}>
             {
               items.map((sprite) => (
-                <SpriteCardsItem key={sprite.id} dragId={sprite.id} handle={true} value={sprite.id} width={cardWidth}/>
+                <SpriteCardsItem key={sprite.id} dragId={sprite.id} handle={true} sprite={sprite} width={cardWidth}/>
               ))
             }
             <DragOverlay>
