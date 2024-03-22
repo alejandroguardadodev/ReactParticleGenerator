@@ -80,11 +80,59 @@ const SpriteSheetModal = () => {
     }, [canvasContainerWidth, canvasContainerHeight, image, open])
 
     const onChange = (id, value) => {
-        
+        let newProps = {
+            [id]: value
+        }
+
+        switch(id) {
+            case 'columns':
+                newProps['boxWidth'] = `${Math.floor(Number.parseInt(realImgWidth) / Number.parseInt(value))}`
+                break;
+            case 'rows':
+                newProps['boxHeight'] = `${Math.floor(Number.parseInt(realImgWidth) / Number.parseInt(value))}`
+                break;
+        }
+        console.log(newProps)
         setSpritePropeties({
             ...spritePropeties,
-            [id]: value
+            ...newProps
         });
+    }
+
+    const onUpdate = (data) => {
+        
+        let nextId = 1, currentId = 0;
+
+        if ((currentId = localStorage.getItem("currentSpriteId")) !== null && currentId !== undefined && currentId !== "")
+            nextId = Number.parseInt(currentId) + 1
+          
+        const imgFileName = "SpriteSheet_" + nextId;
+
+        localStorage.setItem("currentSpriteId", nextId)
+        localStorage.setItem(imgFileName, localStorage.getItem('firstOpenImageFile'))
+
+        const dataToSave = {
+            id: nextId,
+            imgName: imgFileName,
+            rows: data.rows,
+            columns: data.columns,
+            numberOfFrames: data.numberOfFrames, // COlUMNS
+            framesPerRows: data.framesPerRows, // ROWS
+            offsetX: 0,
+            offsetY: 0,
+        }
+
+        let savedSprites = [], savedSpritesStr = "";
+
+        if ((savedSpritesStr = localStorage.getItem("SpriteSheets")) !== null && savedSpritesStr !== undefined && savedSpritesStr !== "") {
+            savedSprites = JSON.parse(savedSpritesStr);
+        }
+
+        savedSprites.push(dataToSave)
+
+        localStorage.setItem("SpriteSheets", JSON.stringify(savedSprites))
+
+        alert('DONE')
     }
 
     return (
@@ -104,6 +152,7 @@ const SpriteSheetModal = () => {
                 <Grid item xs={5}>
                     <SpriteSheetForm 
                         onChange={onChange}
+                        onUpdate={onUpdate}
                         spriteProps={spritePropeties}
                     />
                 </Grid>
