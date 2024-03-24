@@ -18,13 +18,19 @@ const MainForm = styled('form')({
     height: '100%'
 })
 
-const SpriteSheetForm = ({spriteProps, onChange}) => {
+const SpriteSheetForm = ({spriteProps, onChange, onUpdate}) => {
 
     const { formPackage, onSubmit, resetFormByValues, data: formData } = useClientForm(SpriteSheetSchema, spriteProps)
 
     useEffect(() => {
         resetFormByValues(spriteProps)
     }, [spriteProps])
+
+    useEffect(() => {
+        if (formData == null || formData == undefined) return;
+
+        onUpdate(formData)
+    }, [formData])
 
     return (
         <MainForm onSubmit={onSubmit}>

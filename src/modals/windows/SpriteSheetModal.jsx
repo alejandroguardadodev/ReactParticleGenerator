@@ -3,12 +3,15 @@ import { useRef, useEffect, useState } from 'react'
 import { useResizeDetector } from 'react-resize-detector'
 
 import useModal from "../../hooks/useModal"
+import useSpriteSheet from '../../hooks/useSpriteSheet'
 
 import ModalBase from "../ModalBase"
 import SpriteSheetCanvas from '../../canvas/SpriteSheetCanvas'
 import SpriteSheetForm from '../../forms/SpriteSheetForm'
 
 import Grid from '@mui/material/Grid'
+
+import alertify from 'alertifyjs';
 
 const initSpritePropeties = {
     columns: "1",
@@ -33,6 +36,8 @@ const SpriteSheetModal = () => {
     const [ spritePropeties, setSpritePropeties ] = useState(initSpritePropeties)
 
     const [open, setOpen, getMetadata] = useModal("Sprite_Sheet")
+    const { addSprite } = useSpriteSheet()
+
     const { width: canvasContainerWidth, height: canvasContainerHeight, ref: canvasContainerRef } = useResizeDetector()
 
     useEffect(() => {
@@ -80,11 +85,63 @@ const SpriteSheetModal = () => {
     }, [canvasContainerWidth, canvasContainerHeight, image, open])
 
     const onChange = (id, value) => {
-        
+        let newProps = {
+            [id]: value
+        }
+
+        switch(id) {
+            case 'columns':
+                newProps['boxWidth'] = `${Math.floor(Number.parseInt(realImgWidth) / Number.parseInt(value))}`
+                break;
+            case 'rows':
+                newProps['boxHeight'] = `${Math.floor(Number.parseInt(realImgWidth) / Number.parseInt(value))}`
+                break;
+        }
+        console.log(newProps)
         setSpritePropeties({
             ...spritePropeties,
-            [id]: value
+            ...newProps
         });
+    }
+
+    const onUpdate = (data) => {
+        
+        let nextId = 1, currentId = 0;
+
+        if ((currentId = localStorage.getItem("currentSpriteId")) !== null && currentId !== undefined && currentId !== "")
+            nextId = Number.parseInt(currentId) + 1
+          
+        const imgFileName = "SpriteSheet_" + nextId;
+
+        localStorage.setItem("currentSpriteId", nextId)
+        localStorage.setItem(imgFileName, localStorage.getItem('firstOpenImageFile'))
+
+        const dataToSave = {
+            id: nextId,
+            imgName: imgFileName,
+            rows: data.rows,
+            columns: data.columns,
+            numberOfFrames: data.numberOfFrames, // COlUMNS
+            framesPerRows: data.framesPerRows, // ROWS
+            offsetX: 0,
+            offsetY: 0,
+        }
+
+        let savedSprites = [], savedSpritesStr = "";
+
+        if ((savedSpritesStr = localStorage.getItem("SpriteSheets")) !== null && savedSpritesStr !== undefined && savedSpritesStr !== "") {
+            savedSprites = JSON.parse(savedSpritesStr);
+        }
+
+        savedSprites.push(dataToSave)
+
+        localStorage.setItem("SpriteSheets", JSON.stringify(savedSprites))
+
+        addSprite(dataToSave)
+
+        setOpen(false)
+
+        alertify.success('Sprite added succefully'); 
     }
 
     return (
@@ -104,6 +161,7 @@ const SpriteSheetModal = () => {
                 <Grid item xs={5}>
                     <SpriteSheetForm 
                         onChange={onChange}
+                        onUpdate={onUpdate}
                         spriteProps={spritePropeties}
                     />
                 </Grid>

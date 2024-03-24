@@ -52,7 +52,9 @@ const theme = createTheme({
                     props: { variant: 'no-space' },
                     style: {
                         margin: '0px !important',
-                        padding: '0px !important'
+                        padding: '0px !important',
+                        height: '100vh',
+                        maxHeight: '100vh'
                     }
                 }
             ],

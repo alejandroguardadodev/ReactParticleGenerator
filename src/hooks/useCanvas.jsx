@@ -9,8 +9,6 @@ const useCanvas = (containerWidth, containerHeight, show, drawFunction) => {
 
     const draw = ctx => {
         ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height)
-        ctx.fillStyle = '#C7C6C4'
-        ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height)
 
         drawFunction(ctx)
 

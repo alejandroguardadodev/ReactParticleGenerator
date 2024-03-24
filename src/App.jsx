@@ -13,6 +13,7 @@ import TestPages from './pages/TestPages';
 import MainPage from './pages/MainPage';
 
 import './App.css'
+import 'alertifyjs/build/css/alertify.css';
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
           <Routes>
             <Route path='/' element={<DashboardLayout />}>
               <Route index element={<MainPage />} />
+              <Route path='test' element={<TestPages />} />
             </Route>
           </Routes>
         </Provider>
