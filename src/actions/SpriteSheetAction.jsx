@@ -12,7 +12,6 @@ export function uploadSprites(sprites) {
 }
 
 export function deleteSpriteById(id) {
-    console.log('SPRITE ID: ', id)
     return async (dispatch) => dispatch({
         type: DELETE_SPECIFIC_SPRITE,
         payload: id

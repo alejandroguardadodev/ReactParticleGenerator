@@ -53,8 +53,6 @@ const SpritesCardListItemBody = ({ containerWidth }) => {
     let index = -1;
 
     items.find(function(item, i){
-      console.log(item, ' => ', i)
-
       if(item.id === id) {
         index = i
         return i
@@ -79,7 +77,7 @@ const SpritesCardListItemBody = ({ containerWidth }) => {
       setItems((items) => {
         const oldIndex = findItemById(active.id);
         const newIndex = findItemById(over.id);
-        console.log(oldIndex, ' - ', newIndex)
+        
         return arrayMove(items, oldIndex, newIndex);
       })
   }

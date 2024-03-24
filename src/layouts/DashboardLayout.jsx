@@ -34,7 +34,6 @@ const DashboardLayout = () => {
 
   const bodyHeight = useMemo(
     () => {
-      console.log('Height: ', containerHeight, 'Header: ', headerHeight)
       return Math.floor(containerHeight) - Math.floor(headerHeight)
     }
   , [containerHeight, headerHeight]);
