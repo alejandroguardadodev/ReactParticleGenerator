@@ -2,6 +2,12 @@ import { styled } from '@mui/system';
 
 import Menu from '@mui/material/Menu'
 import MenuItem from '@mui/material/MenuItem'
+import Divider from '@mui/material/Divider'
+
+import ListItemIcon from '@mui/material/ListItemIcon'
+import ListItemText from '@mui/material/ListItemText'
+
+import RouteIcon from '@mui/icons-material/Route'
 
 const SpriteMenu = styled(Menu)({
     "& .MuiPaper-root": {
@@ -34,7 +40,13 @@ const SpriteAnimationSubMenu = ({ id, anchor, open, onClose, onDelete }) => {
             }}
         >
             <MenuItem onClick={() => { onClose(); onDelete(); }}>Delete Sprite</MenuItem>
-            <MenuItem onClick={() => { onClose(); }}>Define Path</MenuItem>
+            <Divider sx={{ background: 'rgba(255, 255, 255, .2)' }} />
+            <MenuItem onClick={() => { onClose(); }}>
+                <ListItemIcon sx={{ color: '#50F287' }}>
+                    <RouteIcon />
+                </ListItemIcon>
+                Define Path
+            </MenuItem>
         </SpriteMenu>
     )
 }
