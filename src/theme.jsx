@@ -20,6 +20,12 @@ const theme = createTheme({
           },
     },
     typography: {
+        h3: {
+            fontSize: '1.2rem',
+            fontWeight: 400,
+            fontFamily: "'Audiowide', sans-serif",
+            textTransform: 'capitalize',
+        },
         h4: {
             fontSize: 18,
             fontWeight: 400,

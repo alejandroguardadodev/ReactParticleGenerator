@@ -19,7 +19,10 @@ const initSpritePropeties = {
     numberOfFrames: "1",
     framesPerRows: "1",
     boxHeight: "0",
-    boxWidth: "0"
+    boxWidth: "0",
+    offsetRows: "0", 
+    offsetColumns: "0",
+    framesCounts: "0",
 }
 
 const SpriteSheetModal = () => {
@@ -97,7 +100,7 @@ const SpriteSheetModal = () => {
                 newProps['boxHeight'] = `${Math.floor(Number.parseInt(realImgWidth) / Number.parseInt(value))}`
                 break;
         }
-        console.log(newProps)
+        
         setSpritePropeties({
             ...spritePropeties,
             ...newProps
@@ -123,8 +126,8 @@ const SpriteSheetModal = () => {
             columns: data.columns,
             numberOfFrames: data.numberOfFrames, // COlUMNS
             framesPerRows: data.framesPerRows, // ROWS
-            offsetX: 0,
-            offsetY: 0,
+            offsetX: data.offsetRows,
+            offsetY: data.offsetColumns,
         }
 
         let savedSprites = [], savedSpritesStr = "";

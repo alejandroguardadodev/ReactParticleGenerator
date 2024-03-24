@@ -51,9 +51,10 @@ const CardBody = styled(Box, {
 const GAMESPEED = 20;
 
 const SpriteCardsItem = ({ dragId, width, sprite }) => {
-  let frame = 0, frames = 0;
+  let frame = 0, frames = 0, frameX = 0, frameY = 0;
 
   const [columnFrameLimit, setColumnFrameLimit] = useState(0)
+  const [rowFrameLimit, setRowFrameLimit] = useState(0)
 
   const [anchorEl, setAnchorEl] = useState(null)
   const subMenuOpen = Boolean(anchorEl)
@@ -72,7 +73,10 @@ const SpriteCardsItem = ({ dragId, width, sprite }) => {
     imgName: flinename_img,
     rows,
     columns,
+    numberOfFrames,
     framesPerRows,
+    offsetX,
+    offsetY,
   } = sprite
 
   const { width: containerWidth, height: containerHeight, ref: canvasContainerRef } = useResizeDetector()
@@ -94,14 +98,16 @@ const SpriteCardsItem = ({ dragId, width, sprite }) => {
 
     const centerShift_x = ( ctx.canvas.width - imgWidth ) / 2;
     const centerShift_y = ( ctx.canvas.height - imgHeight ) / 2;  
-
-    ctx.drawImage(spriteSheet, frame * boxWidth, 0, boxWidth, boxHeight, centerShift_x, centerShift_y, imgWidth, imgHeight);
+    
+    ctx.drawImage(spriteSheet, (boxWidth * offsetX) + (frameX * boxWidth), (boxHeight * offsetY)  + (frameY * boxHeight), boxWidth, boxHeight, centerShift_x, centerShift_y, imgWidth, imgHeight);
 
     frames++;
 
     if (frames % GAMESPEED === 0) {
-      if (frame >= columnFrameLimit) frame = 0
-      else frame++
+      if (frameX >= columnFrameLimit) {
+        if (rows > 1) frameY = (frameY >= rowFrameLimit)? 0 : frameY + 1;
+        frameX = 0
+      } else frameX++
     }
   })
 
@@ -118,6 +124,10 @@ const SpriteCardsItem = ({ dragId, width, sprite }) => {
   useEffect(() => {
     setColumnFrameLimit(framesPerRows - 1)
   }, [framesPerRows])
+
+  useEffect(() => {
+    setRowFrameLimit(numberOfFrames - 1)
+  }, [numberOfFrames])
 
   useEffect(() => {
     if (!isDragging) frame = 0

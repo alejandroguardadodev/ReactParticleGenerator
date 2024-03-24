@@ -34,6 +34,7 @@ const SpriteAnimationSubMenu = ({ id, anchor, open, onClose, onDelete }) => {
             }}
         >
             <MenuItem onClick={() => { onClose(); onDelete(); }}>Delete Sprite</MenuItem>
+            <MenuItem onClick={() => { onClose(); }}>Define Path</MenuItem>
         </SpriteMenu>
     )
 }

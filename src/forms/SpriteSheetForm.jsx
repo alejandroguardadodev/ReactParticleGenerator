@@ -44,16 +44,22 @@ const SpriteSheetForm = ({spriteProps, onChange, onUpdate}) => {
                             <InputBase id="rows" label="Rows" placeholder="Only Numbers" type="number" min={1} formPackage={formPackage} borderColor="#50F287" onChange={onChange} />
                         </Grid>
                         <Grid item xs={6} mt={2}>
+                            <InputBase id="offsetColumns" label="Offset Columns" placeholder="Only Numbers" type="number" min={0} formPackage={formPackage} borderColor="#50F287" onChange={onChange} />
+                        </Grid>
+                        <Grid item xs={6} mt={2}>
+                            <InputBase id="offsetRows" label="Offset Rows" placeholder="Only Numbers" type="number" min={0} formPackage={formPackage} borderColor="#50F287" onChange={onChange} />
+                        </Grid>
+                        <Grid item xs={6} mt={2}>
                             <InputBase id="numberOfFrames" label="Number Of Frames" placeholder="Only Numbers" type="number" min={1} formPackage={formPackage} borderColor="#50F287" onChange={onChange} />
                         </Grid>
                         <Grid item xs={6} mt={2}>
                             <InputBase id="framesPerRows" label="Frames Per Rows" placeholder="Only Numbers" type="number" min={1} formPackage={formPackage} borderColor="#50F287" onChange={onChange} />
                         </Grid>
                         <Grid item xs={6} mt={2}>
-                            <InputBase id="boxWidth" label="Box Width" placeholder="Only Numbers" type="number" min={1} formPackage={formPackage} borderColor="#50F287" onChange={onChange} />
+                            <InputBase id="boxWidth" label="Box Width" placeholder="Only Numbers" type="number" min={1} formPackage={formPackage} borderColor="#50F287" onChange={onChange} disabled />
                         </Grid>
                         <Grid item xs={6} mt={2}>
-                            <InputBase id="boxHeight" label="Box Height" placeholder="Only Numbers" type="number" min={1} formPackage={formPackage} borderColor="#50F287" onChange={onChange} />
+                            <InputBase id="boxHeight" label="Box Height" placeholder="Only Numbers" type="number" min={1} formPackage={formPackage} borderColor="#50F287" onChange={onChange} disabled />
                         </Grid>
                     </Grid>
                 </Box>
