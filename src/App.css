@@ -51,7 +51,7 @@
 .ajs-message {
     font-size: 15px;
     font-family: 'Audiowide', sans-serif;
-    text-transform: uppercase;
+    text-transform: capitalize;
     background: #50F287;
     color: black;
 }

@@ -1,7 +1,10 @@
 import { styled } from '@mui/system'
 
 import { useState, useMemo, useEffect } from 'react';
+import { useResizeDetector } from 'react-resize-detector'
+
 import useSpriteSheet from '../../../hooks/useSpriteSheet';
+import useCanvas from '../../../hooks/useCanvas';
 
 import {
   DndContext,
@@ -31,10 +34,13 @@ const CustomBox = styled(Box)({
 
 const SpritesCardListItemBody = ({ containerWidth }) => {
 
-  const [activateCardId, setActivateCardId] = useState(null);
+  const [activateCardId, setActivateCardId] = useState(null)
+  const [activateImage, setActivateImage] = useState(null)
+  const [activateItem, setActivateItem] = useState(null)
   const [items, setItems] = useState([])
 
   const { sprites } = useSpriteSheet()
+  const { width: canvasContainerWidth, height: canvasContainerHeight, ref: canvasContainerRef } = useResizeDetector()
 
   const findItemById = (id) => {
     let index = -1;
@@ -72,8 +78,45 @@ const SpritesCardListItemBody = ({ containerWidth }) => {
   }
 
   useEffect(() => {
-    if (items.length === 0) setItems(sprites)
+    if (sprites !== null) {
+      setItems(sprites)
+    }
   }, [sprites])
+
+  useEffect(() => {
+    if (activateCardId >= 1) {
+      const _activateItem = sprites.find(sprite => sprite.id == activateCardId)
+
+      let _image = new Image();
+      var dataImage = localStorage.getItem(_activateItem.imgName);
+      _image.src = dataImage;
+
+      setActivateImage(_image)
+      setActivateItem(_activateItem)
+    }
+  }, [activateCardId])
+
+  const { canvasRef } = useCanvas(canvasContainerWidth, canvasContainerHeight, open, ctx => {
+    if (activateImage === null || activateItem === null) return;
+
+    const { columns, rows } = activateItem
+   
+    const boxWidth = Math.floor(activateImage.width / columns)
+    const boxHeight = Math.floor(activateImage.height / rows)
+
+    var hRatio = canvasContainerWidth / boxWidth
+    var vRatio = canvasContainerHeight / boxHeight
+
+    var ratio  = Math.min(hRatio, vRatio);
+
+    let imgWidth = Math.floor(boxWidth * ratio) * .75
+    let imgHeight = Math.floor(boxHeight * ratio) * .75
+
+    const centerShift_x = ( ctx.canvas.width - imgWidth ) / 2;
+    const centerShift_y = ( ctx.canvas.height - imgHeight ) / 2;  
+
+    ctx.drawImage(activateImage, 0, 0, boxWidth, boxHeight, centerShift_x, centerShift_y, imgWidth, imgHeight);
+  })
 
   const cardWidth = useMemo(() => (Math.floor(containerWidth / 2.7)), [containerWidth])
   
@@ -91,12 +134,21 @@ const SpritesCardListItemBody = ({ containerWidth }) => {
               {
                 activateCardId? (
                   <div
+                    ref={canvasContainerRef}
                     style={{
                       width: `${cardWidth}px`,
                       height: `${cardWidth  + 25}px`,
-                      backgroundColor: "red"
+                      backgroundColor: "#E2E0D9",
+                      borderRadius: '2px',
+                      margin: "10px",
+
+                      display: 'flex',
+                      justifyContent: 'center',
+                      alignItems: 'center',
                     }}
-                  ></div>
+                  >
+                    <canvas ref={canvasRef} />
+                  </div>
                 ) : null
               }
             </DragOverlay>

@@ -3,6 +3,7 @@ import { useRef, useEffect, useState } from 'react'
 import { useResizeDetector } from 'react-resize-detector'
 
 import useCanvas from '../../../hooks/useCanvas'
+import useSpriteSheet from '../../../hooks/useSpriteSheet'
 import useSpriteByCanvas from '../../../hooks/useSpriteByCanvas'
 
 import { styled } from '@mui/material/styles' 
@@ -27,7 +28,7 @@ const CardContainer = styled(Box, {
     transition,
     zIndex: isDragging ? "100" : "auto",
     opacity: isDragging ? 0.3 : 1,
-    position: 'relative'
+    position: 'relative',
 }))
 
 const CardBody = styled(Box, {
@@ -43,11 +44,13 @@ const CardBody = styled(Box, {
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
+
+  boxShadow: '0px 0px 30px -10px rgba(0,0,0,0.8)'
 }))
 
-const SpriteCardsItem = ({ dragId, width, sprite }) => {
+const GAMESPEED = 20;
 
-  const GAMESPEED = 20;
+const SpriteCardsItem = ({ dragId, width, sprite }) => {
   let frame = 0, frames = 0;
 
   const [columnFrameLimit, setColumnFrameLimit] = useState(0)
@@ -68,7 +71,8 @@ const SpriteCardsItem = ({ dragId, width, sprite }) => {
     id: spriteId,
     imgName: flinename_img,
     rows,
-    columns
+    columns,
+    framesPerRows,
   } = sprite
 
   const { width: containerWidth, height: containerHeight, ref: canvasContainerRef } = useResizeDetector()
@@ -101,6 +105,8 @@ const SpriteCardsItem = ({ dragId, width, sprite }) => {
     }
   })
 
+  const { deleteSpriteById } = useSpriteSheet()
+
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   }
@@ -110,8 +116,8 @@ const SpriteCardsItem = ({ dragId, width, sprite }) => {
   }
 
   useEffect(() => {
-    setColumnFrameLimit(columns - 1)
-  }, [rows, columns])
+    setColumnFrameLimit(framesPerRows - 1)
+  }, [framesPerRows])
 
   useEffect(() => {
     if (!isDragging) frame = 0
@@ -120,9 +126,10 @@ const SpriteCardsItem = ({ dragId, width, sprite }) => {
   // EVENTS --------------------
 
   const onDelete = () => {
-    alertify.alert('Warning!', "Are you sure you want to delete the sprite?", function(){ 
+    alertify.confirm('Warning!', "Are you sure you want to delete the sprite?", function(){
+      deleteSpriteById(spriteId)
       alertify.success('Deleted'); 
-    });  
+    }, function(){});
   }
 
   return (

@@ -3,12 +3,15 @@ import { useRef, useEffect, useState } from 'react'
 import { useResizeDetector } from 'react-resize-detector'
 
 import useModal from "../../hooks/useModal"
+import useSpriteSheet from '../../hooks/useSpriteSheet'
 
 import ModalBase from "../ModalBase"
 import SpriteSheetCanvas from '../../canvas/SpriteSheetCanvas'
 import SpriteSheetForm from '../../forms/SpriteSheetForm'
 
 import Grid from '@mui/material/Grid'
+
+import alertify from 'alertifyjs';
 
 const initSpritePropeties = {
     columns: "1",
@@ -33,6 +36,8 @@ const SpriteSheetModal = () => {
     const [ spritePropeties, setSpritePropeties ] = useState(initSpritePropeties)
 
     const [open, setOpen, getMetadata] = useModal("Sprite_Sheet")
+    const { addSprite } = useSpriteSheet()
+
     const { width: canvasContainerWidth, height: canvasContainerHeight, ref: canvasContainerRef } = useResizeDetector()
 
     useEffect(() => {
@@ -132,7 +137,11 @@ const SpriteSheetModal = () => {
 
         localStorage.setItem("SpriteSheets", JSON.stringify(savedSprites))
 
-        alert('DONE')
+        addSprite(dataToSave)
+
+        setOpen(false)
+
+        alertify.success('Sprite added succefully'); 
     }
 
     return (
