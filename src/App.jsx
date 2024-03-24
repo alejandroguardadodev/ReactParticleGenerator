@@ -13,6 +13,7 @@ import TestPages from './pages/TestPages';
 import MainPage from './pages/MainPage';
 
 import './App.css'
+import 'alertifyjs/build/css/alertify.css';
 
 function App() {
   return (

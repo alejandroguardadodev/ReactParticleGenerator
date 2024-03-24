@@ -8,7 +8,16 @@ import useSpriteByCanvas from '../../../hooks/useSpriteByCanvas'
 import { styled } from '@mui/material/styles' 
 import { CSS } from "@dnd-kit/utilities"
 
+import alertify from 'alertifyjs';
+
 import Box from '@mui/material/Box'
+import Stack from '@mui/material/Stack'
+
+import IconButton from '@mui/material/IconButton'
+
+import MenuIcon from '@mui/icons-material/Menu';
+
+import SpriteAnimationSubMenu from '../../submenus/SpriteAnimationSubMenu'
 
 const CardContainer = styled(Box, {
     shouldForwardProp: (prop) => prop !== "isDragging" && prop !== "transform" && prop !== "transition",
@@ -18,6 +27,7 @@ const CardContainer = styled(Box, {
     transition,
     zIndex: isDragging ? "100" : "auto",
     opacity: isDragging ? 0.3 : 1,
+    position: 'relative'
 }))
 
 const CardBody = styled(Box, {
@@ -33,16 +43,17 @@ const CardBody = styled(Box, {
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
-
-  position: 'relative'
 }))
-
-const GAMESPEED = 45;
-let frame = 0, frames = 0;
 
 const SpriteCardsItem = ({ dragId, width, sprite }) => {
 
+  const GAMESPEED = 20;
+  let frame = 0, frames = 0;
+
   const [columnFrameLimit, setColumnFrameLimit] = useState(0)
+
+  const [anchorEl, setAnchorEl] = useState(null)
+  const subMenuOpen = Boolean(anchorEl)
 
   const {
     attributes,
@@ -54,6 +65,7 @@ const SpriteCardsItem = ({ dragId, width, sprite }) => {
   } = useSortable({ id: dragId });
 
   const {
+    id: spriteId,
     imgName: flinename_img,
     rows,
     columns
@@ -89,15 +101,43 @@ const SpriteCardsItem = ({ dragId, width, sprite }) => {
     }
   })
 
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  }
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  }
+
   useEffect(() => {
     setColumnFrameLimit(columns - 1)
   }, [rows, columns])
 
+  useEffect(() => {
+    if (!isDragging) frame = 0
+  }, [isDragging])
+
+  // EVENTS --------------------
+
+  const onDelete = () => {
+    alertify.alert('Warning!', "Are you sure you want to delete the sprite?", function(){ 
+      alertify.success('Deleted'); 
+    });  
+  }
+
   return (
     <CardContainer id={dragId} ref={setNodeRef} transform={transform} transition={transition} isDragging={isDragging}>
+      <Stack direction="row" justifyContent="flex-end" sx={{ position: 'absolute', top: '4%', right: '6%' }}>
+        <IconButton id={`sprite-submenu-${spriteId}-button`} onClick={handleClick} aria-label="sub_menu" sx={{ color: 'black' }}>
+          <MenuIcon />
+        </IconButton>
+      </Stack>
+
       <CardBody ref={canvasContainerRef} {...listeners} {...attributes} boxWidth={width}>
         <canvas ref={canvasRef} />
       </CardBody>
+
+      <SpriteAnimationSubMenu id={`sprite-submenu-${spriteId}-menu`} open={subMenuOpen} anchor={anchorEl} onClose={handleClose} onDelete={onDelete}/>
     </CardContainer>
   )
 }
