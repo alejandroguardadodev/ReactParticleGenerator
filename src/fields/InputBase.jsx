@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { styled } from '@mui/material/styles';
+import { styled } from '@mui/material/styles'
 
 import PropTypes from 'prop-types';
 
@@ -21,9 +21,6 @@ const CostumInputStyle = styled(TextField, {
   ]
 })(({ theme, borderColor }) => ({
   '& .MuiOutlinedInput-root': {
-    '& input': {
-      
-    },
     '& fieldset': {
       border: `1px solid ${(borderColor && borderColor !== '')? borderColor : theme.palette.primary.light} !important`,
     },
@@ -47,7 +44,13 @@ const CostumInputStyle = styled(TextField, {
     },
     '&.MuiFormLabel-filled + .MuiOutlinedInput-root legend': {
       paddingRight: '.7rem',
+    },
+    '&.Mui-disabled': {
+      color: 'white !important',
     }
+  },
+  '& input.Mui-disabled': {
+    '-webkit-text-fill-color': 'white !important'
   },
   borderRadius: '3px',
 }));
@@ -62,7 +65,7 @@ const CostumIconButton = styled(IconButton, {
   }
 }))
 
-const InputBase = ({id, label, placeholder, type, formPackage: {register, errors, setValue, getValues}, min = 0, borderColor, onChange}) => {
+const InputBase = ({id, label, placeholder, type, formPackage: {register, errors, setValue, getValues}, min = 0, borderColor, onChange, disabled=false}) => {
 
   const updateNumberByArrow = (sign) => {
     let value = `${getValues(id)}`;
@@ -102,7 +105,7 @@ const InputBase = ({id, label, placeholder, type, formPackage: {register, errors
         helperText={errors[id] ? errors[id].message : null}
         {...register(id)}
         InputProps={{
-          endAdornment: type === "number"? (
+          endAdornment: type === "number" && !disabled? (
             <ButtonGroup
               orientation="vertical"
               aria-label="Vertical button group"
@@ -115,6 +118,7 @@ const InputBase = ({id, label, placeholder, type, formPackage: {register, errors
         }}
         borderColor={borderColor}
         onChange={onChangeHandler}
+        disabled={disabled}
       />
     </>
   )

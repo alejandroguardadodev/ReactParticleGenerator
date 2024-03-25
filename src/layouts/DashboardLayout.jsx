@@ -7,7 +7,8 @@ import Container from '@mui/material/Container';
 
 import Header from '../components/Header';
 
-import SpriteSheetModal from '../modals/windows/SpriteSheetModal';
+import SpriteSheetModal from '../modals/windows/SpriteSheetModal'
+import AnimationMenu from '../components/menus/AnimationMenu';
 
 import { useResizeDetector } from 'react-resize-detector'
 
@@ -34,7 +35,6 @@ const DashboardLayout = () => {
 
   const bodyHeight = useMemo(
     () => {
-      console.log('Height: ', containerHeight, 'Header: ', headerHeight)
       return Math.floor(containerHeight) - Math.floor(headerHeight)
     }
   , [containerHeight, headerHeight]);
@@ -51,6 +51,7 @@ const DashboardLayout = () => {
         </Container>
 
         <SpriteSheetModal />
+        <AnimationMenu />
     </>
   )
 }
