@@ -154,7 +154,7 @@ const SpriteCardsItem = ({ dragId, width, sprite }) => {
         <canvas ref={canvasRef} />
       </CardBody>
 
-      <SpriteAnimationSubMenu id={`sprite-submenu-${spriteId}-menu`} open={subMenuOpen} anchor={anchorEl} onClose={handleClose} onDelete={onDelete}/>
+      <SpriteAnimationSubMenu id={`sprite-submenu-${spriteId}-menu`} sprite={sprite} open={subMenuOpen} anchor={anchorEl} onClose={handleClose} onDelete={onDelete}/>
     </CardContainer>
   )
 }
