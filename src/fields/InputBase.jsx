@@ -15,11 +15,11 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import { isNumeric } from '../tools/mathTools';
 
 const CostumInputStyle = styled(TextField, {
-  shouldForwardProp: (prop) => prop !== "borderColor" && prop !== "fontColor" && prop !== 'noBackground',
+  shouldForwardProp: (prop) => prop !== "borderColor" && prop !== "fontColor" && prop !== 'transparentBackground',
   overridesResolver: (props, styles) => [
     styles.root,
   ]
-})(({ theme, borderColor, fontColor, noBackground }) => ({
+})(({ theme, borderColor, fontColor, transparentBackground }) => ({
   '& .MuiOutlinedInput-root': {
     '& input': {
       color: `${(fontColor && fontColor !== '')? fontColor : 'white'} !important`,
@@ -34,7 +34,7 @@ const CostumInputStyle = styled(TextField, {
     "&.Mui-error fieldset": {
       borderColor: `${theme.palette.error.main} !important`,
     },
-    ...(noBackground && {
+    ...(transparentBackground && {
       background: 'transparent !important'
     })
   },
@@ -72,7 +72,7 @@ const CostumIconButton = styled(IconButton, {
   }
 }))
 
-const InputBase = ({id, label, placeholder, type, formPackage: {register, errors, setValue, getValues}, min = 0, borderColor, onChange, disabled=false, fontColor, noBackground}) => {
+const InputBase = ({id, label, placeholder, type, formPackage: {register, errors, setValue, getValues}, min = 0, borderColor, onChange, disabled=false, fontColor, transparentBackground}) => {
 
   const updateNumberByArrow = (sign) => {
     let value = `${getValues(id)}`;
@@ -127,7 +127,7 @@ const InputBase = ({id, label, placeholder, type, formPackage: {register, errors
         onChange={onChangeHandler}
         disabled={disabled}
         fontColor={fontColor}
-        noBackground={noBackground}
+        transparentBackground={transparentBackground}
       />
     </>
   )
@@ -138,14 +138,14 @@ InputBase.propTypes = {
   label: PropTypes.string,
   placeholder: PropTypes.string,
   min: PropTypes.number,
-  noBackground: PropTypes.bool
+  transparentBackground: PropTypes.bool
 }; 
 
 InputBase.defaultProps = {
   placeholder: '',
   label: '',
   min: 0,
-  noBackground: false
+  transparentBackground: false
 };
 
 export default InputBase

@@ -40,7 +40,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 
 const AnimationMenu = () => {
 
-    const { openAnimationMenu, animationMenuWidth, handleCloseAnimationMenu } = useAnimationMenu()
+    const { currentSprite, openAnimationMenu, animationMenuWidth, handleCloseAnimationMenu } = useAnimationMenu()
     
     return (
         <>
@@ -56,7 +56,7 @@ const AnimationMenu = () => {
                     </IconButton>
                 </DrawerHeader>
                 <Divider sx={{ background: 'black' }} />
-                <AnimationMenuOptionsList />
+                <AnimationMenuOptionsList sprite={currentSprite} />
             </MenuDrawer>
         </>
     )
