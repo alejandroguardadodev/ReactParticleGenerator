@@ -11,6 +11,7 @@ import SpriteSheetModal from '../modals/windows/SpriteSheetModal'
 import AnimationMenu from '../components/menus/AnimationMenu';
 
 import { useResizeDetector } from 'react-resize-detector'
+import { DndContext } from '@dnd-kit/core';
 
 const BoxContainer = styled(Box)({
     width: '100vw',
@@ -40,7 +41,7 @@ const DashboardLayout = () => {
   , [containerHeight, headerHeight]);
 
   return (
-    <>
+    <DndContext>
         <Container variant="no-space">
             <BoxContainer ref={containerRef} >
                 <Header headerRef={headerRef} />
@@ -52,7 +53,7 @@ const DashboardLayout = () => {
 
         <SpriteSheetModal />
         <AnimationMenu />
-    </>
+    </DndContext>
   )
 }
 
