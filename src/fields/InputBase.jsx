@@ -15,26 +15,33 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import { isNumeric } from '../tools/mathTools';
 
 const CostumInputStyle = styled(TextField, {
-  shouldForwardProp: (prop) => prop !== "borderColor",
+  shouldForwardProp: (prop) => prop !== "borderColor" && prop !== "fontColor" && prop !== 'noBackground',
   overridesResolver: (props, styles) => [
     styles.root,
   ]
-})(({ theme, borderColor }) => ({
+})(({ theme, borderColor, fontColor, noBackground }) => ({
   '& .MuiOutlinedInput-root': {
+    '& input': {
+      color: `${(fontColor && fontColor !== '')? fontColor : 'white'} !important`,
+    },
     '& fieldset': {
       border: `1px solid ${(borderColor && borderColor !== '')? borderColor : theme.palette.primary.light} !important`,
+      color: `${(fontColor && fontColor !== '')? fontColor : 'white'} !important`,
     },
     '&.Mui-focused legend': {
-        paddingRight: '.7rem',
+      paddingRight: '.7rem',
     },
     "&.Mui-error fieldset": {
       borderColor: `${theme.palette.error.main} !important`,
-    }
+    },
+    ...(noBackground && {
+      background: 'transparent !important'
+    })
   },
   "& .MuiFormLabel-root": {
     fontFamily: `"Lekton", sans-serif !important`,
     fontWeight: 400,
-    color: "white",
+    color: `${(fontColor && fontColor !== '')? fontColor : 'white'} !important`,
     textTransform: 'capitalize',
     '&.Mui-focused': {
       color: `${(borderColor && borderColor !== '')? borderColor : theme.palette.primary.light}`,
@@ -46,7 +53,7 @@ const CostumInputStyle = styled(TextField, {
       paddingRight: '.7rem',
     },
     '&.Mui-disabled': {
-      color: 'white !important',
+      color: `${(fontColor && fontColor !== '')? fontColor : 'white'} !important`,
     }
   },
   '& input.Mui-disabled': {
@@ -65,7 +72,7 @@ const CostumIconButton = styled(IconButton, {
   }
 }))
 
-const InputBase = ({id, label, placeholder, type, formPackage: {register, errors, setValue, getValues}, min = 0, borderColor, onChange, disabled=false}) => {
+const InputBase = ({id, label, placeholder, type, formPackage: {register, errors, setValue, getValues}, min = 0, borderColor, onChange, disabled=false, fontColor, noBackground}) => {
 
   const updateNumberByArrow = (sign) => {
     let value = `${getValues(id)}`;
@@ -119,6 +126,8 @@ const InputBase = ({id, label, placeholder, type, formPackage: {register, errors
         borderColor={borderColor}
         onChange={onChangeHandler}
         disabled={disabled}
+        fontColor={fontColor}
+        noBackground={noBackground}
       />
     </>
   )
@@ -128,13 +137,15 @@ InputBase.propTypes = {
   id: PropTypes.string,
   label: PropTypes.string,
   placeholder: PropTypes.string,
-  min: PropTypes.number
+  min: PropTypes.number,
+  noBackground: PropTypes.bool
 }; 
 
 InputBase.defaultProps = {
   placeholder: '',
   label: '',
-  min: 0
+  min: 0,
+  noBackground: false
 };
 
 export default InputBase
