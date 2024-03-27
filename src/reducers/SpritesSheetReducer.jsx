@@ -1,10 +1,12 @@
 import {
     UPLOAD_SPRITES,
     DELETE_SPECIFIC_SPRITE,
-    ADD_SPRITE
+    ADD_SPRITE,
+    SET_CURRENT_ANIM_SPRITE
 } from '../types/SpriteSheetTypes'
 
 const initialState = {
+    currentAnimSprite: null,
     sprites: [
         
     ]
@@ -27,6 +29,12 @@ export default function(state = initialState, action) {
                     ...state.sprites,
                     action.payload
                 ]
+            }
+
+        case SET_CURRENT_ANIM_SPRITE:
+            return {
+                ...state,
+                currentAnimSprite: action.payload
             }
         
         case DELETE_SPECIFIC_SPRITE:

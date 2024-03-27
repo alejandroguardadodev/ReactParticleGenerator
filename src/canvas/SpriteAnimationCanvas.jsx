@@ -1,6 +1,8 @@
-import {DndContext, useDraggable, useDroppable} from '@dnd-kit/core';
+import { useEffect } from 'react';
+import { useDroppable } from '@dnd-kit/core';
 import { styled } from '@mui/material/styles'
 
+import useSpriteSheet from '../hooks/useSpriteSheet';
 import useCanvas from "../hooks/useCanvas"
 
 import Box from '@mui/material/Box'
@@ -19,6 +21,8 @@ const CanvasContainer = styled(Box, {
 
 const SpriteAnimationCanvas = ({ containerWidth, containerHeight, isAnimationMenuOpen }) => {
 
+    const { currentAnimSprite } = useSpriteSheet()
+
     const { setNodeRef } = useDroppable({
         id: 'animation-droppable'
     });
@@ -29,7 +33,11 @@ const SpriteAnimationCanvas = ({ containerWidth, containerHeight, isAnimationMen
         ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height)
     })
 
-   
+    useEffect(() => {
+        if (currentAnimSprite === null) return
+
+        if (!currentAnimSprite.hasAnimationInfo) alert('NO ANIMATION PATH')
+    }, [currentAnimSprite])
 
     return (
         <CanvasContainer ref={setNodeRef} containerWidth={containerWidth} containerHeight={containerHeight}>

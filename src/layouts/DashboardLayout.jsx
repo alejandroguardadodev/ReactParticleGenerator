@@ -43,7 +43,7 @@ const DashboardLayout = () => {
 
   // DnD Kit Context --------------------------------------
   const { setItems, setActiveItemId, items, findIndexByItemId } = useItemsSortable('SpritesSheet')
-  const { sprites } = useSpriteSheet()
+  const { sprites, setCurrentAnimSprite, findSpriteById } = useSpriteSheet()
 
   const defaultAnnouncements = {
     onDragStart(id) {
@@ -82,7 +82,6 @@ const DashboardLayout = () => {
   const handleDragStart = (event) => {  setActiveItemId(event.active.id) }
 
   const handleDragEnd = (event) => {
-    console.log('EVENT END: ', event)
     setActiveItemId(null);
 
     const { active, over } = event;
@@ -95,7 +94,9 @@ const DashboardLayout = () => {
 
         setItems(arrayMove(items, oldIndex, newIndex))
       } else { // START ANIMATION
+        const currentSprite = findSpriteById(active.id);
 
+        setCurrentAnimSprite(currentSprite)
       }
     }
   }
