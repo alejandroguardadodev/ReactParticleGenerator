@@ -29,6 +29,8 @@ const SpriteAnimationCanvas = ({ containerWidth, containerHeight, isAnimationMen
         ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height)
     })
 
+   
+
     return (
         <CanvasContainer ref={setNodeRef} containerWidth={containerWidth} containerHeight={containerHeight}>
             <AnimationCanvas ref={canvasRef} />

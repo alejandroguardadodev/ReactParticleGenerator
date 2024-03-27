@@ -3,25 +3,12 @@ import { styled } from '@mui/system'
 import { useState, useMemo, useEffect } from 'react';
 import { useResizeDetector } from 'react-resize-detector'
 
+import useItemsSortable from '../../../hooks/useItemsSortable';
 import useSpriteSheet from '../../../hooks/useSpriteSheet';
 import useCanvas from '../../../hooks/useCanvas';
 
-import {
-  DndContext,
-  closestCenter,
-  KeyboardSensor,
-  PointerSensor,
-  useSensor,
-  useSensors,
-  DragOverlay
-} from "@dnd-kit/core"
-
-import {
-  arrayMove,
-  SortableContext,
-  sortableKeyboardCoordinates,
-  rectSortingStrategy
-} from "@dnd-kit/sortable"
+import { useDroppable, DragOverlay } from "@dnd-kit/core";
+import { SortableContext, rectSortingStrategy } from "@dnd-kit/sortable";
 
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
@@ -41,52 +28,16 @@ const ImgNotFound = styled('img')({
 
 const SpritesCardListItemBody = ({ containerWidth }) => {
 
-  const [activateCardId, setActivateCardId] = useState(null)
+  const { setNodeRef } = useDroppable({ id: 'container_1'});
+
   const [activateImage, setActivateImage] = useState(null)
   const [activateItem, setActivateItem] = useState(null)
-  const [items, setItems] = useState([])
 
   const { sprites } = useSpriteSheet()
   const { width: canvasContainerWidth, height: canvasContainerHeight, ref: canvasContainerRef } = useResizeDetector()
 
-  const findItemById = (id) => {
-    let index = -1;
-
-    items.find(function(item, i){
-      if(item.id === id) {
-        index = i
-        return i
-      }
-    });
-
-    return index
-  }
-
-  const sensors = useSensors(
-    useSensor(PointerSensor),
-    useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
-  )
-
-  const handleDragStart = (event) => {  setActivateCardId(event.active.id) }
-
-  const handleDragEnd = (event) => {
-    setActivateCardId(null);
-    const { active, over } = event;
-
-    if (active.id !== over.id)
-      setItems((items) => {
-        const oldIndex = findItemById(active.id);
-        const newIndex = findItemById(over.id);
-        
-        return arrayMove(items, oldIndex, newIndex);
-      })
-  }
-
-  useEffect(() => {
-    if (sprites !== null) {
-      setItems(sprites)
-    }
-  }, [sprites])
+  // NEW ------------------------------------------------------
+  const { items, activeId: activateCardId } = useItemsSortable('SpritesSheet')
 
   useEffect(() => {
     if (activateCardId >= 1) {
@@ -100,6 +51,7 @@ const SpritesCardListItemBody = ({ containerWidth }) => {
       setActivateItem(_activateItem)
     }
   }, [activateCardId])
+  // ----------------------------------------------------------
 
   const { canvasRef } = useCanvas(canvasContainerWidth, canvasContainerHeight, open, ctx => {
     if (activateImage === null || activateItem === null) return;
@@ -124,15 +76,14 @@ const SpritesCardListItemBody = ({ containerWidth }) => {
   })
 
   const cardWidth = useMemo(() => (Math.floor(containerWidth / 2.7)), [containerWidth])
-  
+
   return (
     <CustomBox>
-      <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd} onDragStart={handleDragStart}>
+      <SortableContext id='container_1' items={items} strategy={rectSortingStrategy}>
         {
           (items !== null && items.length > 0)? 
           (
-            <Box p={2} sx={{ maxWidth: `${containerWidth}px`, display: 'flex', flexWrap: 'wrap', flexDirection: 'row' }}>
-              <SortableContext items={items} strategy={rectSortingStrategy}>
+            <Box ref={setNodeRef} p={2} sx={{ maxWidth: `${containerWidth}px`, display: 'flex', flexWrap: 'wrap', flexDirection: 'row' }}>
                 {
                   items.map((sprite) => (
                     <SpriteCardsItem key={sprite.id} dragId={sprite.id} handle={true} sprite={sprite} width={cardWidth}/>
@@ -160,7 +111,6 @@ const SpritesCardListItemBody = ({ containerWidth }) => {
                     ) : null
                   }
                 </DragOverlay>
-              </SortableContext>
             </Box>
           ) : (
             <Stack spacing={2}>
@@ -174,7 +124,7 @@ const SpritesCardListItemBody = ({ containerWidth }) => {
             </Stack>
           )
         }
-      </DndContext>
+      </SortableContext>
     </CustomBox>
   )
 }
