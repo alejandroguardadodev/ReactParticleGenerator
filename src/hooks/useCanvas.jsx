@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState } from 'react'
+import { useRef, useEffect, useState, useMemo } from 'react'
 
 const useCanvas = (containerWidth, containerHeight, show, drawFunction) => {
 
@@ -29,7 +29,8 @@ const useCanvas = (containerWidth, containerHeight, show, drawFunction) => {
 
         const canvas = canvasRef.current
         const context = canvas.getContext('2d')
-
+        setContext(context)
+        
         let animationFrameId;
 
         const render = () => {
@@ -45,9 +46,37 @@ const useCanvas = (containerWidth, containerHeight, show, drawFunction) => {
 
     }, [draw, canvasRef, show])
 
+    const middleX = useMemo(() => {
+        if (context === null) return -1
+
+        return context.canvas.width / 2
+    }, [context])
+
+    const middleY = useMemo(() => {
+        if (context === null) return -1
+
+        return context.canvas.height / 2
+    }, [context])
+
+    const horizontalEnd = useMemo(() => {
+        if (context === null) return -1
+
+        return context.canvas.width
+    }, [context])
+
+    const verticalEnd = useMemo(() => {
+        if (context === null) return -1
+
+        return context.canvas.height
+    }, [context])
+
     return {
         canvasRef,
-        context
+        context,
+        horizontalEnd,
+        verticalEnd,
+        middleX,
+        middleY
     }
 }
 

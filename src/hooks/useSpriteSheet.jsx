@@ -59,12 +59,12 @@ const useSpriteSheet = () => {
     const findSpriteById = id => {
         const currentSpr = sprites.filter((spr) => spr.id == id)
 
-        if (!currentSpr) return null
+        if (!currentSpr || currentSpr.length === 0) return null
 
         const animationInfo = getAnimationSpriteInfo(id)
         
         return {
-            ...currentSpr,
+            ...currentSpr[0],
             hasAnimationInfo: (Object.keys(animationInfo).length > 0),
             animationPath: animationInfo
         }

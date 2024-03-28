@@ -95,8 +95,9 @@ const DashboardLayout = () => {
         setItems(arrayMove(items, oldIndex, newIndex))
       } else { // START ANIMATION
         const currentSprite = findSpriteById(active.id);
-
-        setCurrentAnimSprite(currentSprite)
+        
+        if (!currentSprite.hasAnimationInfo) alert('NO ANIMATION PATH')
+        else setCurrentAnimSprite(currentSprite)
       }
     }
   }
