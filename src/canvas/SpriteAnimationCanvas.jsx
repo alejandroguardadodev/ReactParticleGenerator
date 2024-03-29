@@ -126,7 +126,7 @@ const SpriteAnimationCanvas = ({ containerWidth, containerHeight, isAnimationMen
             console.log('Angle: ', currentAnimSprite.animationPath.angle)
 
             curve = Number.parseInt(`${currentAnimSprite.animationPath.curve}`) / 100
-            angleSpeed = Number.parseInt(`${currentAnimSprite.animationPath.angleSpeed}`) / 100
+            angleSpeed = Number.parseInt(`${currentAnimSprite.animationPath.angleSpeed}`) / 1000
             angle = Number.parseInt(`${currentAnimSprite.animationPath.angle}`) / 100
             speed = 2
         }
@@ -170,7 +170,7 @@ const SpriteAnimationCanvas = ({ containerWidth, containerHeight, isAnimationMen
         if (openAnimationMenu) {
             
             curve = Number.parseInt(`${animationPath.curve}`) / 100
-            angleSpeed = Number.parseInt(`${animationPath.angleSpeed}`) / 100
+            angleSpeed = Number.parseInt(`${animationPath.angleSpeed}`) / 1000
             angle = Number.parseInt(`${animationPath.angle}`) / 100
 
             imgX = 0

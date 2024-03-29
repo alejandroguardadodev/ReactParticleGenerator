@@ -26,7 +26,7 @@ const SpriteMenu = styled(Menu)({
 
 const SpriteAnimationSubMenu = ({ id, anchor, open, onClose, onDelete, sprite }) => {
 
-    const { handleOpenAnimationMenu } = useAnimationMenu()
+    const { openAnimationMenu, handleOpenAnimationMenu } = useAnimationMenu()
 
     const noneAnimation = useMemo(() => {
         if (sprite === null || Object.keys(sprite).length === 0) return true
@@ -41,7 +41,7 @@ const SpriteAnimationSubMenu = ({ id, anchor, open, onClose, onDelete, sprite })
             jsonCurveAnimations = JSON.parse(strCurveAnimations)
 
         return !jsonCurveAnimations[curveSpriteKey]
-    }, [sprite])
+    }, [sprite, openAnimationMenu])
 
     return (
         <SpriteMenu

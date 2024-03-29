@@ -37,6 +37,7 @@ const AnimationMenuOptionsList = ({sprite}) => {
         return jsonCurveAnimations
     }
 
+    // UPDATE ANIMATION BY FIELDS CHANGES
     const onChange = (id, value) => {
         let newProps = {
             [id]: value
@@ -48,6 +49,7 @@ const AnimationMenuOptionsList = ({sprite}) => {
         });
     }
 
+    // WHEN WE REALIZE ANY CHANGE
     const onUpdate = (data) => {
         
         const { id: spriteId } = sprite
@@ -64,11 +66,16 @@ const AnimationMenuOptionsList = ({sprite}) => {
             curve: `${data.curve}`
         }
 
+        setAnimationPath({
+            ...jsonCurveAnimations[curveSpriteKey]
+        });
+
         localStorage.setItem("curveAnimations", JSON.stringify(jsonCurveAnimations))
 
         alertify.success('Curve Settings Updated'); 
     }
 
+    // UPDATE ANIMATION PATH
     useEffect(() => {
         if (sprite === null || Object.keys(sprite).length === 0) return
 
@@ -77,15 +84,22 @@ const AnimationMenuOptionsList = ({sprite}) => {
         const curveSpriteKey = `curve_anim_${spriteId}`
         const jsonCurveAnimations = getJSONCurveAnimation()
 
-        if(jsonCurveAnimations[curveSpriteKey]) {
+        if(jsonCurveAnimations[curveSpriteKey]) { // THERE IS ANY OPTION
             const objCurve = jsonCurveAnimations[curveSpriteKey]
 
-            setAnimationCurveOpts({
+            const dataCurve = {
                 angle: objCurve.angle,
                 angleSpeed: objCurve.angleSpeed,
                 curve: objCurve.curve
-            })
-        } else setAnimationCurveOpts({...initAnimationCurveOptions})
+            }
+
+            setAnimationCurveOpts(dataCurve)
+            setAnimationPath(dataCurve)
+
+        } else {
+            setAnimationCurveOpts({ ...initAnimationCurveOptions })
+            setAnimationPath({ ...initAnimationCurveOptions })
+        }
 
     }, [sprite])
 
