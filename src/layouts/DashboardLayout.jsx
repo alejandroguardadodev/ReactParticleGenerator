@@ -43,7 +43,7 @@ const DashboardLayout = () => {
 
   // DnD Kit Context --------------------------------------
   const { setItems, setActiveItemId, items, findIndexByItemId } = useItemsSortable('SpritesSheet')
-  const { sprites, setCurrentAnimSprite, findSpriteById } = useSpriteSheet()
+  const { sprites, setCurrentAnimSprite, findSpriteById, setAnimationError } = useSpriteSheet()
 
   const defaultAnnouncements = {
     onDragStart(id) {
@@ -96,8 +96,9 @@ const DashboardLayout = () => {
       } else { // START ANIMATION
         const currentSprite = findSpriteById(active.id);
         
-        if (!currentSprite.hasAnimationInfo) alert('NO ANIMATION PATH')
-        else setCurrentAnimSprite(currentSprite)
+        if (currentSprite.hasAnimationInfo) setCurrentAnimSprite(currentSprite)
+
+        setAnimationError(!currentSprite.hasAnimationInfo)
       }
     }
   }

@@ -76,7 +76,7 @@ const useCanvas = (containerWidth, containerHeight, show, drawFunction) => {
         horizontalEnd,
         verticalEnd,
         middleX,
-        middleY
+        middleY,
     }
 }
 

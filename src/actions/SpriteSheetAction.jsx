@@ -2,7 +2,8 @@ import {
     UPLOAD_SPRITES,
     DELETE_SPECIFIC_SPRITE,
     ADD_SPRITE,
-    SET_CURRENT_ANIM_SPRITE
+    SET_CURRENT_ANIM_SPRITE,
+    SET_ANIMATION_ERROR
 } from '../types/SpriteSheetTypes'
 
 export function uploadSprites(sprites) {
@@ -30,5 +31,12 @@ export function setCurrentAnimSprite(sprite) {
     return async (dispatch) => dispatch({
         type: SET_CURRENT_ANIM_SPRITE,
         payload: sprite
+    })
+}
+
+export function setAnimationError(err) {
+    return async (dispatch) => dispatch({
+        type: SET_ANIMATION_ERROR,
+        payload: err
     })
 }

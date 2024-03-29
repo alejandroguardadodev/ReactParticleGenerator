@@ -6,13 +6,14 @@ import {
     uploadSprites,
     deleteSpriteById,
     addSprite,
-    setCurrentAnimSprite
+    setCurrentAnimSprite,
+    setAnimationError
 } from '../actions/SpriteSheetAction'
 
 const useSpriteSheet = () => {
     const dispatch = useDispatch()
 
-    const { sprites, currentAnimSprite } = useSelector(state => state.spriteSheets)
+    const { sprites, currentAnimSprite, animationError } = useSelector(state => state.spriteSheets)
     
     useEffect(() => {
         let savedSpritesStr = "";
@@ -70,13 +71,17 @@ const useSpriteSheet = () => {
         }
     }
 
+    const actionSetAnimationError = err => dispatch(setAnimationError(err))
+
     return {
         sprites,
         currentAnimSprite,
+        animationError,
         findSpriteById,
         deleteSpriteById: actionDeleteSpriteById,
         addSprite: actionAddSprite,
-        setCurrentAnimSprite: actionSetCurrentAnimSprite
+        setCurrentAnimSprite: actionSetCurrentAnimSprite,
+        setAnimationError: actionSetAnimationError
     }
 }
 

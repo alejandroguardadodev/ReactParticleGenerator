@@ -1,15 +1,34 @@
-import { useEffect, useState } from 'react';
-import { useDroppable } from '@dnd-kit/core';
+import { useEffect, useState } from 'react'
+import { useDroppable } from '@dnd-kit/core'
 import { styled } from '@mui/material/styles'
 
-import useDrawCanvasSprite from '../hooks/useDrawCanvasSprite';
-import useSpriteSheet from '../hooks/useSpriteSheet';
+import useAnimationMenu from '../hooks/useAnimationMenu'
+import useDrawCanvasSprite from '../hooks/useDrawCanvasSprite'
+import useSpriteSheet from '../hooks/useSpriteSheet'
 import useCanvas from "../hooks/useCanvas"
 
 import Box from '@mui/material/Box'
+import Chip from '@mui/material/Chip'
 
-const AnimationCanvas = styled("canvas")(({ theme }) => ({
-    border: `1px solid ${theme.palette.primary.light}`,
+import CloseIcon from '@mui/icons-material/Close'
+
+import alertify from 'alertifyjs'
+
+const ChipError = styled(Chip)(({theme}) => ({
+    fontWeight: 400,
+    fontFamily: "'Lekton', sans-serif",
+    textTransform: 'uppercase',
+    padding: '5px 10px 5px 20px',
+    position: 'absolute',
+    top: '0',
+    right: '0',
+    transform: 'translate(5px, -50%)'
+}))
+
+const AnimationCanvas = styled("canvas", {
+    shouldForwardProp: (prop) => prop !== "error"
+})(({ theme, error }) => ({
+    border: `1px solid ${error? "red" : theme.palette.primary.light}`,
     borderRadius: '3px',
 }))
 
@@ -17,11 +36,21 @@ const CanvasContainer = styled(Box, {
     shouldForwardProp: (prop) => prop !== "containerWidth" && prop !== "containerHeight"
 })(({ theme, containerWidth, containerHeight }) => ({
     width: `${containerWidth}px !important`,
-    height: `${containerHeight}px !important`
+    height: `${containerHeight}px !important`,
+    position: 'relative'
 }))
 
 // ANIMATION INFO -----------------------------------------------
 let imgX = 0, imgY = 0, angle = 0, speed = 0, angleSpeed = 0, curve = 0;
+
+const resetAnimationInfo = () => {
+    imgX = 0
+    imgY = 0
+    angle = 0
+    speed = 0
+    angleSpeed = 0
+    curve = 0;
+}
 // --------------------------------------------------------------
 
 const SpriteAnimationCanvas = ({ containerWidth, containerHeight, isAnimationMenuOpen }) => {
@@ -29,26 +58,48 @@ const SpriteAnimationCanvas = ({ containerWidth, containerHeight, isAnimationMen
     const [animationSetting, setAnimationSetting] = useState(null)
     const [imgSize, setImgSize] = useState([0, 0])
 
-    const { currentAnimSprite } = useSpriteSheet()
-    const { spriteSheet, drawBackground, drawSprite, getResizeInfo } = useDrawCanvasSprite({ sprite: currentAnimSprite })
+    const { openAnimationMenu } = useAnimationMenu()
+    const { currentAnimSprite, animationError, setAnimationError } = useSpriteSheet()
+    const { spriteSheet, drawBackground, drawSprite, getResizeInfo, removeSpriteSheet } = useDrawCanvasSprite({ sprite: currentAnimSprite })
 
     const { setNodeRef } = useDroppable({
         id: 'animation-droppable'
     });
 
-    const { canvasRef, middleY } = useCanvas(containerWidth, isAnimationMenuOpen? 400 : 500, open, ctx => {
+    const { canvasRef, middleY } = useCanvas(containerWidth, isAnimationMenuOpen? 400 : 500, true, ctx => {
         // Background
         drawBackground(ctx, '#143D61')
+
+        if (openAnimationMenu) { // TO TESt the animation
+
+            let circleSize = 5
+
+            ctx.beginPath()
+            ctx.arc(imgX, imgY, circleSize, 0, 2 * Math.PI);
+            ctx.fillStyle = '#1DF098'
+            ctx.fill()
+
+            return;
+        }
 
         if (animationSetting === null) return
 
         const [ width, height ] = imgSize
-        //const { angleSpeed, curve } = animationSetting
+        const canvasWidth = ctx.canvas.width
+        const canvasHeigh = ctx.canvas.height
+
+        const increaseY = curve * Math.sin(angle)
 
         imgX += speed;
-        imgY += curve * Math.sin(angle);
+        imgY += increaseY
 
         drawSprite(ctx, width, height, imgX, imgY)
+
+        if (imgX >= canvasWidth) imgX = -width
+
+        if ( increaseY > 0 && imgY >= canvasHeigh) imgY = -height
+        if ( increaseY < 0 && (imgY + height) <= 0 ) imgY = canvasHeigh
+        
 
         angle += angleSpeed
     })
@@ -86,9 +137,34 @@ const SpriteAnimationCanvas = ({ containerWidth, containerHeight, isAnimationMen
 
     }, [imgSize, middleY])
 
+    useEffect(() => { if (animationError) {
+        removeSpriteSheet()
+        alertify.error('No Animation Path Defined');
+        resetAnimationInfo()
+    } }, [animationError])
+
+    useEffect(() => {
+        if (openAnimationMenu) {
+            removeSpriteSheet()
+            resetAnimationInfo()
+
+            imgY = middleY - 5;
+            // PREPEARE FOR ANIMATION TEST
+        }
+    }, [openAnimationMenu])
+
     return (
-        <CanvasContainer ref={setNodeRef} containerWidth={containerWidth} containerHeight={containerHeight}>
-            <AnimationCanvas ref={canvasRef} />
+        <CanvasContainer ref={setNodeRef} containerWidth={containerWidth} containerHeight={containerHeight} >
+            <AnimationCanvas ref={canvasRef} error={animationError}/>
+
+            {animationError && (<ChipError
+                label="No Animation"
+                onClick={() => {setAnimationError(false)}}
+                onDelete={() => {setAnimationError(false)}}
+                deleteIcon={<CloseIcon />}
+                color="error"
+            />)}
+            
         </CanvasContainer>
     )
 }

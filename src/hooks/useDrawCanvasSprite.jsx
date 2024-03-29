@@ -139,11 +139,14 @@ const useDrawCanvasSprite = ({sprite, isAnimated=false}) => {
         return Math.floor(image.height / rows)
     }, [image, sprite])
 
+    const removeSpriteSheet = () => { setImage(null) }
+
     return {
         drawSprite,
         getResizeInfo,
         drawBackground,
         drawSpriteForFullBox,
+        removeSpriteSheet,
         spriteSheet: image,
         spriteBoxWidth: boxWidth,
         spriteBoxHeight: boxHeight
