@@ -7,8 +7,9 @@ import List from '@mui/material/List'
 import alertify from 'alertifyjs'
 
 import AnimationOptionItemCard from './cards/AnimationOptionItemCard'
-
 import SpriteAnimationMenuForm from '../../forms/SpriteAnimationMenuForm'
+
+import useAnimationMenu from '../../hooks/useAnimationMenu'
 
 const Container = styled(Box)(() => ({
     width: '100%',
@@ -25,6 +26,7 @@ const initAnimationCurveOptions = {
 const AnimationMenuOptionsList = ({sprite}) => {
 
     const [animationCurveOpts, setAnimationCurveOpts] = useState(initAnimationCurveOptions)
+    const { animationPath, setAnimationPath, hasAnimationPath } = useAnimationMenu()
 
     const getJSONCurveAnimation = () => {
         let strCurveAnimations = null, jsonCurveAnimations = {}
@@ -36,7 +38,14 @@ const AnimationMenuOptionsList = ({sprite}) => {
     }
 
     const onChange = (id, value) => {
-        
+        let newProps = {
+            [id]: value
+        }
+
+        setAnimationPath({
+            ...animationPath,
+            ...newProps
+        });
     }
 
     const onUpdate = (data) => {

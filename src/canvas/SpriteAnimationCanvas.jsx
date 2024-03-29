@@ -58,7 +58,7 @@ const SpriteAnimationCanvas = ({ containerWidth, containerHeight, isAnimationMen
     const [animationSetting, setAnimationSetting] = useState(null)
     const [imgSize, setImgSize] = useState([0, 0])
 
-    const { openAnimationMenu } = useAnimationMenu()
+    const { openAnimationMenu, animationPath } = useAnimationMenu()
     const { currentAnimSprite, animationError, setAnimationError } = useSpriteSheet()
     const { spriteSheet, drawBackground, drawSprite, getResizeInfo, removeSpriteSheet } = useDrawCanvasSprite({ sprite: currentAnimSprite })
 
@@ -70,14 +70,28 @@ const SpriteAnimationCanvas = ({ containerWidth, containerHeight, isAnimationMen
         // Background
         drawBackground(ctx, '#143D61')
 
+        const canvasWidth = ctx.canvas.width
+        const canvasHeigh = ctx.canvas.height
+
         if (openAnimationMenu) { // TO TESt the animation
 
             let circleSize = 5
+            const increaseY = curve * Math.sin(angle)
+
+            imgX += speed;
+            imgY += increaseY
 
             ctx.beginPath()
             ctx.arc(imgX, imgY, circleSize, 0, 2 * Math.PI);
             ctx.fillStyle = '#1DF098'
             ctx.fill()
+
+            if (imgX >= canvasWidth) imgX = -circleSize
+
+            if ( increaseY > 0 && imgY >= canvasHeigh) imgY = -circleSize
+            if ( increaseY < 0 && (imgY + circleSize) <= 0 ) imgY = canvasHeigh
+
+            angle += angleSpeed
 
             return;
         }
@@ -85,8 +99,6 @@ const SpriteAnimationCanvas = ({ containerWidth, containerHeight, isAnimationMen
         if (animationSetting === null) return
 
         const [ width, height ] = imgSize
-        const canvasWidth = ctx.canvas.width
-        const canvasHeigh = ctx.canvas.height
 
         const increaseY = curve * Math.sin(angle)
 
@@ -149,9 +161,22 @@ const SpriteAnimationCanvas = ({ containerWidth, containerHeight, isAnimationMen
             resetAnimationInfo()
 
             imgY = middleY - 5;
+            speed = 2
             // PREPEARE FOR ANIMATION TEST
         }
     }, [openAnimationMenu])
+
+    useEffect(() => {
+        if (openAnimationMenu) {
+            
+            curve = Number.parseInt(`${animationPath.curve}`) / 100
+            angleSpeed = Number.parseInt(`${animationPath.angleSpeed}`) / 100
+            angle = Number.parseInt(`${animationPath.angle}`) / 100
+
+            imgX = 0
+            imgY = middleY - 5;
+        }
+    }, [animationPath])
 
     return (
         <CanvasContainer ref={setNodeRef} containerWidth={containerWidth} containerHeight={containerHeight} >

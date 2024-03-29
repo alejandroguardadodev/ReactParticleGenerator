@@ -1,13 +1,19 @@
 import {
     OPEN_ANIMATION_MENU,
     CLOSE_ANIMATION_MENU,
-    DEFINE_MENU_SIZE
+    DEFINE_MENU_SIZE,
+    SET_ANIMATION_PATH
 } from '../types/AnimationMenuTypes'
 
 const initialState = {
     open: false,
     sprite: {},
     width: 0,
+    animationPath: {
+        angle: 0,
+        angleSpeed: 0,
+        curve: 0
+    }
 }
 
 export default function(state = initialState, action) {
@@ -32,6 +38,14 @@ export default function(state = initialState, action) {
                 ...state,
                 sprite: {},
                 open: false,
+            }
+
+        case SET_ANIMATION_PATH:
+            return {
+                ...state,
+                animationPath: {
+                    ...action.payload
+                }
             }
 
         default:
