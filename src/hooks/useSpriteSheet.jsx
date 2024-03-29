@@ -5,13 +5,15 @@ import { useSelector, useDispatch } from 'react-redux'
 import { 
     uploadSprites,
     deleteSpriteById,
-    addSprite
+    addSprite,
+    setCurrentAnimSprite,
+    setAnimationError
 } from '../actions/SpriteSheetAction'
 
 const useSpriteSheet = () => {
     const dispatch = useDispatch()
 
-    const { sprites } = useSelector(state => state.spriteSheets)
+    const { sprites, currentAnimSprite, animationError } = useSelector(state => state.spriteSheets)
     
     useEffect(() => {
         let savedSpritesStr = "";
@@ -39,14 +41,47 @@ const useSpriteSheet = () => {
         }
     }
 
+    const actionSetCurrentAnimSprite = sprite => dispatch(setCurrentAnimSprite(sprite))
+
     const actionAddSprite = sprite => {
         dispatch(addSprite(sprite))
     }
 
+    const getAnimationSpriteInfo = id => {
+        const curveSpriteKey = `curve_anim_${id}`
+        let strCurveAnimations = null, jsonCurveAnimations = {}
+
+        if ((strCurveAnimations = localStorage.getItem("curveAnimations")) !== null && strCurveAnimations !== undefined && strCurveAnimations !== "")
+            jsonCurveAnimations = JSON.parse(strCurveAnimations)
+        
+        return jsonCurveAnimations[curveSpriteKey] || {}
+    }
+
+    const findSpriteById = id => {
+        const currentSpr = sprites.filter((spr) => spr.id == id)
+
+        if (!currentSpr || currentSpr.length === 0) return null
+
+        const animationInfo = getAnimationSpriteInfo(id)
+        
+        return {
+            ...currentSpr[0],
+            hasAnimationInfo: (Object.keys(animationInfo).length > 0),
+            animationPath: animationInfo
+        }
+    }
+
+    const actionSetAnimationError = err => dispatch(setAnimationError(err))
+
     return {
         sprites,
+        currentAnimSprite,
+        animationError,
+        findSpriteById,
         deleteSpriteById: actionDeleteSpriteById,
-        addSprite: actionAddSprite
+        addSprite: actionAddSprite,
+        setCurrentAnimSprite: actionSetCurrentAnimSprite,
+        setAnimationError: actionSetAnimationError
     }
 }
 

@@ -114,7 +114,17 @@ const theme = createTheme({
                             borderRight: '1px solid #BC51DB',
                         },
                     })
-                })
+                }),
+                outlined: {
+                    background: 'transparent !important',
+                    color: 'black',
+                    fontSize: "13px",
+                    padding: '7px 35px',
+                    border: '1px solid #272727 !important',
+                    '&:hover': {
+                        boxShadow: '0px 0px 20px -14px rgba(0,0,0,0.65)',
+                    },
+                }
             }
         },
         MuiTextField: {

@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { styled } from '@mui/system';
 
 import useAnimationMenu from '../../hooks/useAnimationMenu';
@@ -25,7 +26,22 @@ const SpriteMenu = styled(Menu)({
 
 const SpriteAnimationSubMenu = ({ id, anchor, open, onClose, onDelete, sprite }) => {
 
-    const { handleOpenAnimationMenu } = useAnimationMenu()
+    const { openAnimationMenu, handleOpenAnimationMenu } = useAnimationMenu()
+
+    const noneAnimation = useMemo(() => {
+        if (sprite === null || Object.keys(sprite).length === 0) return true
+
+        const { id: spriteId } = sprite
+
+        const curveSpriteKey = `curve_anim_${spriteId}`
+
+        let strCurveAnimations = null, jsonCurveAnimations = {}
+
+        if ((strCurveAnimations = localStorage.getItem("curveAnimations")) !== null && strCurveAnimations !== undefined && strCurveAnimations !== "")
+            jsonCurveAnimations = JSON.parse(strCurveAnimations)
+
+        return !jsonCurveAnimations[curveSpriteKey]
+    }, [sprite, openAnimationMenu])
 
     return (
         <SpriteMenu
@@ -49,7 +65,7 @@ const SpriteAnimationSubMenu = ({ id, anchor, open, onClose, onDelete, sprite })
                 <ListItemIcon sx={{ color: '#50F287' }}>
                     <RouteIcon />
                 </ListItemIcon>
-                Add Animation
+                {(noneAnimation)? 'Add' : 'Set'} Animation
             </MenuItem>
         </SpriteMenu>
     )

@@ -1,7 +1,8 @@
 import {
     OPEN_ANIMATION_MENU,
     DEFINE_MENU_SIZE,
-    CLOSE_ANIMATION_MENU
+    CLOSE_ANIMATION_MENU,
+    SET_ANIMATION_PATH
 } from '../types/AnimationMenuTypes'
 
 export function defineMenuWidth(containerWidth) {
@@ -21,5 +22,12 @@ export function openMenu(sprite) {
 export function closeMenu() {
     return async (dispatch) => dispatch({
         type: CLOSE_ANIMATION_MENU
+    })
+}
+
+export function setAnimationPath(data) {
+    return async (dispatch) => dispatch({
+        type: SET_ANIMATION_PATH,
+        payload: data
     })
 }
