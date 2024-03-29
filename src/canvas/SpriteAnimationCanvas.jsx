@@ -151,7 +151,6 @@ const SpriteAnimationCanvas = ({ containerWidth, containerHeight, isAnimationMen
 
     useEffect(() => { if (animationError) {
         removeSpriteSheet()
-        alertify.error('No Animation Path Defined');
         resetAnimationInfo()
     } }, [animationError])
 

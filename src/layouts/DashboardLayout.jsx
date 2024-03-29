@@ -13,6 +13,8 @@ import AnimationMenu from '../components/menus/AnimationMenu'
 import useItemsSortable from '../hooks/useItemsSortable'
 import useSpriteSheet from '../hooks/useSpriteSheet'
 
+import alertify from 'alertifyjs'
+
 // ----------------
 import { useResizeDetector } from 'react-resize-detector'
 import { DndContext, useSensors, KeyboardSensor, PointerSensor, useSensor, closestCenter } from '@dnd-kit/core'
@@ -99,6 +101,8 @@ const DashboardLayout = () => {
         if (currentSprite.hasAnimationInfo) setCurrentAnimSprite(currentSprite)
 
         setAnimationError(!currentSprite.hasAnimationInfo)
+
+        if (!currentSprite.hasAnimationInfo) alertify.error('No Animation Path Defined');
       }
     }
   }
