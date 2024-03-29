@@ -174,8 +174,14 @@ const SpriteAnimationCanvas = ({ containerWidth, containerHeight, isAnimationMen
 
             imgX = 0
             imgY = middleY - 5;
+
+            console.log('middleY: ', middleY)
         }
     }, [animationPath])
+
+    useEffect(() => {
+        imgY = middleY - 5;
+    }, [middleY])
 
     return (
         <CanvasContainer ref={setNodeRef} containerWidth={containerWidth} containerHeight={containerHeight} >
