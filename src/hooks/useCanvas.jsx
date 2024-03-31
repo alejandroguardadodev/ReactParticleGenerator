@@ -4,6 +4,9 @@ const useCanvas = (containerWidth, containerHeight, show, drawFunction) => {
 
     const canvasRef = useRef(null)
     const [context, setContext] = useState(null)
+
+    const [ canvasHeight, setCanvasHeight ] = useState(0)
+    const [ canvasWidth, setCanvasWidth ] = useState(0)
     
     const shouldBeHidden = () => canvasRef == null || canvasRef.current == null || canvasRef.current == undefined || !show
 
@@ -20,6 +23,11 @@ const useCanvas = (containerWidth, containerHeight, show, drawFunction) => {
 
         canvasRef.current.width = Math.floor(containerWidth)
         canvasRef.current.height = Math.floor(containerHeight)
+
+        setCanvasWidth(canvasRef.current.width)
+        setCanvasHeight(canvasRef.current.height)
+
+        console.log('CHANGED')
 
     }, [show, containerWidth])
 
@@ -54,9 +62,9 @@ const useCanvas = (containerWidth, containerHeight, show, drawFunction) => {
 
     const middleY = useMemo(() => {
         if (context === null) return -1
-
-        return context.canvas.height / 2
-    }, [context])
+        
+        return canvasHeight / 2
+    }, [canvasHeight])
 
     const horizontalEnd = useMemo(() => {
         if (context === null) return -1

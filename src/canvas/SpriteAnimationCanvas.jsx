@@ -43,6 +43,8 @@ const CanvasContainer = styled(Box, {
 // ANIMATION INFO -----------------------------------------------
 let imgX = 0, imgY = 0, angle = 0, speed = 0, angleSpeed = 0, curve = 0;
 
+const circleSize = 5
+
 const resetAnimationInfo = () => {
     imgX = 0
     imgY = 0
@@ -70,48 +72,32 @@ const SpriteAnimationCanvas = ({ containerWidth, containerHeight, isAnimationMen
         // Background
         drawBackground(ctx, '#143D61')
 
+        if (animationSetting === null && !openAnimationMenu) return
+
         const canvasWidth = ctx.canvas.width
         const canvasHeigh = ctx.canvas.height
-
-        if (openAnimationMenu) { // TO TESt the animation
-
-            let circleSize = 5
-            const increaseY = curve * Math.sin(angle)
-
-            imgX += speed;
-            imgY += increaseY
-
-            ctx.beginPath()
-            ctx.arc(imgX, imgY, circleSize, 0, 2 * Math.PI);
-            ctx.fillStyle = '#1DF098'
-            ctx.fill()
-
-            if (imgX >= canvasWidth) imgX = -circleSize
-
-            if ( increaseY > 0 && imgY >= canvasHeigh) imgY = -circleSize
-            if ( increaseY < 0 && (imgY + circleSize) <= 0 ) imgY = canvasHeigh
-
-            angle += angleSpeed
-
-            return;
-        }
-
-        if (animationSetting === null) return
 
         const [ width, height ] = imgSize
 
         const increaseY = curve * Math.sin(angle)
 
-        imgX += speed;
+        const img_w = openAnimationMenu? circleSize : width
+        const img_h = openAnimationMenu? circleSize : height
+
+        imgX += speed
         imgY += increaseY
 
-        drawSprite(ctx, width, height, imgX, imgY)
+        if (openAnimationMenu) {
+            ctx.beginPath()
+            ctx.arc(imgX, imgY, circleSize, 0, 2 * Math.PI);
+            ctx.fillStyle = '#1DF098'
+            ctx.fill()
+        }
+        else if (animationSetting !== null) drawSprite(ctx, img_w, img_h, imgX, imgY)
 
-        if (imgX >= canvasWidth) imgX = -width
-
-        if ( increaseY > 0 && imgY >= canvasHeigh) imgY = -height
-        if ( increaseY < 0 && (imgY + height) <= 0 ) imgY = canvasHeigh
-        
+        if (imgX >= canvasWidth) imgX = -img_w
+        if ( increaseY > 0 && imgY >= canvasHeigh) imgY = -img_h
+        if ( increaseY < 0 && (imgY + img_h) <= 0 ) imgY = canvasHeigh
 
         angle += angleSpeed
     })
@@ -135,7 +121,7 @@ const SpriteAnimationCanvas = ({ containerWidth, containerHeight, isAnimationMen
     useEffect(() => {
         if (spriteSheet === null) return
 
-        const size = getResizeInfo(80, 80)
+        const size = getResizeInfo(70, 70)
 
         setImgSize(size)
     }, [spriteSheet])
@@ -174,8 +160,14 @@ const SpriteAnimationCanvas = ({ containerWidth, containerHeight, isAnimationMen
 
             imgX = 0
             imgY = middleY - 5;
+
+            console.log('middleY: ', middleY)
         }
     }, [animationPath])
+
+    useEffect(() => {
+        imgY = middleY - 5;
+    }, [middleY])
 
     return (
         <CanvasContainer ref={setNodeRef} containerWidth={containerWidth} containerHeight={containerHeight} >

@@ -1,7 +1,8 @@
-import { useMemo } from 'react';
-import { styled } from '@mui/system';
+import { useMemo } from 'react'
+import { styled } from '@mui/system'
 
-import useAnimationMenu from '../../hooks/useAnimationMenu';
+import useAnimationMenu from '../../hooks/useAnimationMenu'
+import useSpriteSheet from '../../hooks/useSpriteSheet'
 
 import Menu from '@mui/material/Menu'
 import MenuItem from '@mui/material/MenuItem'
@@ -27,6 +28,8 @@ const SpriteMenu = styled(Menu)({
 const SpriteAnimationSubMenu = ({ id, anchor, open, onClose, onDelete, sprite }) => {
 
     const { openAnimationMenu, handleOpenAnimationMenu } = useAnimationMenu()
+    const { setAnimationError } = useSpriteSheet()
+
 
     const noneAnimation = useMemo(() => {
         if (sprite === null || Object.keys(sprite).length === 0) return true
@@ -61,7 +64,11 @@ const SpriteAnimationSubMenu = ({ id, anchor, open, onClose, onDelete, sprite })
         >
             <MenuItem onClick={() => { onClose(); onDelete(); }}>Delete Sprite</MenuItem>
             <Divider sx={{ background: 'rgba(255, 255, 255, .2)' }} />
-            <MenuItem onClick={() => { onClose(); handleOpenAnimationMenu(sprite) }}>
+            <MenuItem onClick={() => { 
+                onClose(); 
+                handleOpenAnimationMenu(sprite); 
+                setAnimationError(false); 
+            }}>
                 <ListItemIcon sx={{ color: '#50F287' }}>
                     <RouteIcon />
                 </ListItemIcon>
