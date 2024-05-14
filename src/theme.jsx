@@ -1,4 +1,4 @@
-import { createTheme, styled } from '@mui/material/styles'
+import { createTheme } from '@mui/material/styles'
 
 import FontLenktonRegular from './assets/fonts/lekton/Lekton-Regular.ttf'
 import AudiowideRegular from './assets/fonts/audiowide/Audiowide-Regular.ttf'
